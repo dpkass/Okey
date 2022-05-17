@@ -14,7 +14,8 @@ class Player {
         hand[14] = t;
     }
 
-    public String getName() {
+    @Override
+    public String toString() {
         return name;
     }
 }

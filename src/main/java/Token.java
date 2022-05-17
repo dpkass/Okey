@@ -19,7 +19,8 @@ public class Token {
             case "Gelb" -> this.color = GELB;
             case "Rot" -> this.color = ROT;
             case "Blau" -> this.color = BLAU;
-            case "Schawrz" -> this.color = SCHWARZ;
+            case "Schwarz" -> this.color = SCHWARZ;
+            default -> throw new IllegalArgumentException();
         }
     }
 

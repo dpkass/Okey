@@ -94,6 +94,7 @@ public class GameTester {
         PrintWriter pw = new PrintWriter("TestInputs/test_8");
         Token t = p.hand[0];
         pw.println(t);
+        pw.println("exit");
         pw.close();
 
         g.start();
@@ -114,6 +115,7 @@ public class GameTester {
         pw.println("new");
         Token t2 = p2.hand[0];
         pw.println(t2);
+        pw.println("exit");
         pw.close();
 
         g.start();
@@ -137,6 +139,7 @@ public class GameTester {
         pw.println("new");
         Token t2 = p2.hand[0];
         pw.println(t2);
+        pw.println("exit");
         pw.close();
 
         g.start();
@@ -173,6 +176,7 @@ public class GameTester {
         wait(3);
 
         pw.println("new");
+        pw.println("exit");
         pw.close();
 
         wait(3);

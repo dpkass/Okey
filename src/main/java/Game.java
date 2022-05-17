@@ -131,12 +131,12 @@ class Game {
      * Gives a Token to the player depending on what he wants. Method waits for 20 seconds before ending the game,
      * because of missing response.
      *
-     * @return 0 means player got his Token. -1 means player wants to exit. -2 means player didn't respond.
+     * @return 0 means player got his Token. -1 means player wants to exit or player didn't respond.
      */
     int giveToken() throws IOException, InterruptedException {
         int waitTime = 100;
         String s = waitForInput(waitTime);
-        if (s == null) return -2;
+        if (s == null) return -1;
 
         switch (s) {
             case "new" -> {
@@ -144,7 +144,6 @@ class Game {
                 tokens.remove(0);
             }
             case "thrown" -> players[currentPlayer].getNewToken(lastThrown);
-            case "exit" -> {return -1;}
             default -> {
                 out.println("Please write \"new\" for a new Token or \"thrown\" for the thrown Token.");
                 return giveToken();
@@ -165,31 +164,29 @@ class Game {
         int i = 0;
         synchronized (TimeUnit.MILLISECONDS) {
             while ((s = reader.readLine()) == null) {
-                System.out.println(i);
                 if (i > maxWaitTime * 1000) break;
                 TimeUnit.MILLISECONDS.wait(waitTime);
                 i += waitTime;
             }
         }
-        return s;
+        return s.equals("exit") ? null : s;
     }
 
     /**
      * Tests if a player threw a Token that he has in his hand. If he did, his hand will be adjusted.
      *
-     * @return 0 means the game finished with a winner. -1 means player wants to exit. -2 means player didn't respond.
+     * @return 0 means the game finished with a winner. -1 means player wants to exitor player didn't respond.
      */
     int thrownToken() throws IOException, InterruptedException {
         int waitTime = 100;
         String s = waitForInput(waitTime);
-        if (s == null) return -2;
+        if (s == null) return -1;
         Token thrown = null;
 
         String[] parts = s.split(" ");
         try {
             if (parts[0].equals("Joker")) thrown = new Token(-1, -1);
             else if (parts.length == 2) thrown = new Token(parts[0], Integer.parseInt(parts[1]));
-            else if (parts[0].equals("exit")) return -1;
             else throw new IllegalArgumentException();
         } catch (IllegalArgumentException e) {
             out.println("Invalid Argument. Please write the color of your token and then the number e.g. \"Gelb 5\". For Joker, write \"Joker\".");

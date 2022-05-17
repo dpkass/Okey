@@ -79,6 +79,7 @@ class Game {
                 temp[i] = tokens.get(i);
                 tokens.remove(i);
             }
+            temp[14] = new Token(Token.HEAVY, Token.HEAVY);
             p.setHand(temp);
             playerHandMap.put(p, temp);
         }

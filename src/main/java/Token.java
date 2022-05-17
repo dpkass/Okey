@@ -1,9 +1,14 @@
 public class Token implements Comparable {
-    final int JOKER = -1;
-    final int GELB = 0;
-    final int ROT = 1;
-    final int BLAU = 2;
-    final int SCHWARZ = 3;
+    final static int JOKER = -1;
+    final static int GELB = 0;
+    final static int ROT = 1;
+    final static int BLAU = 2;
+    final static int SCHWARZ = 3;
+    /**
+     * In the first round we would have a null element and with that problems with sorting. We use this to fill the last
+     * space.
+     */
+    final static int HEAVY = 4;
 
     private int color;
     private int number;
@@ -32,10 +37,6 @@ public class Token implements Comparable {
         return number;
     }
 
-    void setNumberOfJoker(int number) {
-        this.number = this.number == -1 ? number : -1;
-    }
-
     boolean equals(Token s) {
         return (s.getColor() == color && s.getNumber() == number);
     }
@@ -49,6 +50,7 @@ public class Token implements Comparable {
             case BLAU -> s += "Blau ";
             case SCHWARZ -> s += "Schwarz ";
             case JOKER -> {return "Joker";}
+            case HEAVY -> {return "Heavy";}
         }
         return s + number;
     }

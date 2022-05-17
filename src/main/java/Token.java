@@ -1,4 +1,4 @@
-public class Token {
+public class Token implements Comparable {
     final int JOKER = -1;
     final int GELB = 0;
     final int ROT = 1;
@@ -51,5 +51,11 @@ public class Token {
             case JOKER -> {return "Joker";}
         }
         return s + number;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        int i = this.color - ((Token) o).getColor();
+        return i == 0 ? (this.number - ((Token) o).getNumber()) : i;
     }
 }

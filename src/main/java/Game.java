@@ -8,7 +8,7 @@ class Game {
     Player[] players;
     int currentPlayer = 0;
     List<Token> tokens = new ArrayList<>();
-    Token joker;
+    //    Token joker;
     Token lastThrown = null;
     Player winner = null;
     BufferedReader reader;
@@ -51,12 +51,12 @@ class Game {
      * It fills the ArrayList of available tokens and shuffles it and determines a joker. It also distributes the
      * tokens.
      * <p>
-     * Fake jokers have color -1 and number -1.
+     * Jokers have color -1 and number -1. For simplification I took out the pulling joker part for now.
      */
     void init() {
         createTokens();
 
-        joker = tokens.get((int) (Math.random() * tokens.size()));
+//        joker = tokens.get((int) (Math.random() * tokens.size()));
 
         tokens.add(new Token(-1, -1));
         tokens.add(new Token(-1, -1));
@@ -103,9 +103,9 @@ class Game {
      */
     int playFirst() throws IOException, InterruptedException {
         out.println("Game starts!!");
-        out.println("The joker is " + joker + ".");
+//        out.println("The joker is " + joker + ".");
+        showHand();
         out.println("Please throw the first Token, " + players[currentPlayer] + ".");
-        printHand();
         if (thrownToken() < 0) return -1;
         currentPlayer = (currentPlayer + 1) % players.length;
         return 0;
@@ -116,11 +116,11 @@ class Game {
      */
     void play() throws IOException, InterruptedException {
         while (winner == null) {
-            printHand();
             out.println("It's " + players[currentPlayer] + "s turn.");
-            out.println("Do you want to take the thrown Token or get a new one?");
+            showHand();
+            out.println("Do you want to take the thrown Token {" + lastThrown + "} or get a new one?");
             if (giveToken() < 0) return;
-            printHand();
+            showHand();
             if (thrownToken() < 0) return;
             currentPlayer = (currentPlayer + 1) % players.length;
         }
@@ -257,7 +257,8 @@ class Game {
         return false;
     }
 
-    void printHand() {
+    void showHand() {
+        Arrays.sort(players[currentPlayer].hand);
         out.println(playerHandMap.entrySet().stream().filter(e -> e.getKey() == players[currentPlayer]).map(e -> e.getKey() + ":" + Arrays.toString(e.getValue()))
                 .collect(Collectors.joining("|")));
     }

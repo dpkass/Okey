@@ -1,2 +1,3 @@
-package PACKAGE_NAME;public interface Output {
+interface Output {
+    public void println(String string);
 }

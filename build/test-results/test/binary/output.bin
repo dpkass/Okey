@@ -1,54 +1,37 @@
-‹Hakan:[Gelb 6, Gelb 8, Rot 4, Rot 7, Rot 10, Rot 13, Blau 1, Blau 1, Blau 2, Blau 8, Blau 11, Schwarz 7, Schwarz 7, Schwarz 8, Schwarz 11]
-Okan:[Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9, Schwarz 10]
-}Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-‡Hakan:[Gelb 6, Gelb 8, Rot 4, Rot 7, Rot 10, Rot 13, Blau 1, Blau 1, Blau 2, Blau 8, Blau 11, Schwarz 7, Schwarz 7, Schwarz 11, Heavy]
-‡Hakan:[Gelb 6, Gelb 8, Rot 4, Rot 7, Rot 10, Rot 13, Blau 1, Blau 1, Blau 2, Blau 8, Blau 11, Schwarz 7, Schwarz 7, Schwarz 11, Heavy]
-}Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-}Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-}Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-}Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-î[Match starts!!, Please throw the first Token, Hakan., The thrown Token is {Schwarz 8}., It's Okans turn., Do you want to take the thrown Token {Schwarz 8} or get a new one?, There is 1 winning combinations., These are [[Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]], It's Hakans turn., Do you want to take the thrown Token {Schwarz 8} or get a new one?, The winner is Okan. Congratulations!!, The next match is about to start.
-
-
-
-
-×, Match starts!!, Please throw the first Token, Hakan., It's Okans turn., Do you want to take the thrown Token {Schwarz 8} or get a new one?, The winner is Okan. Congratulations!!, The next match is about to start.
-
-
-
-
-Y, Match starts!!, Please throw the first Token, Okan., The next match is about to start.
-
-
-
-
-Y, Match starts!!, Please throw the first Token, Okan., The next match is about to start.
-
-
-
-
-Y, Match starts!!, Please throw the first Token, Okan., You won the game!!, Have a candy.
-
-,  .-""-.      ___
-  \  "-.  /      \  .-"  /
-   > -=.\/        \/.=- <
-   > -='/\        /\'=- <
-  /__.-'  \      /  '-.__\
-           '-..-'
-	    ____
-  .' /  '.
- /  (  .-'\
-|'.__\/__  |
-|    /\  '.|
- \.-'  )  /
-   '.__/_.'
-        ____
-      .' /:::.
-     /  (:::-'\
-    |:\__\/__  |
-    |::::/\:::\|
-     \::'  )::/
-       '.__/::'
-, 
-
-See you next time.]
+[Players must not have the same name., Please enter the player names., There is a minimum of two players and a maximum of four in this match.]
+ŠHakan:[Joker, Gelb 1, Gelb 4, Gelb 6, Gelb 10, Gelb 12, Gelb 13, Rot 11, Rot 12, Rot 13, Blau 6, Blau 12, Blau 13, Schwarz 5, Schwarz 13]
+‰Okan:[Gelb 3, Gelb 5, Gelb 8, Gelb 9, Gelb 11, Rot 1, Rot 3, Rot 9, Blau 1, Blau 9, Schwarz 2, Schwarz 8, Schwarz 10, Schwarz 11, Heavy]
+ŠOkan:[Gelb 3, Gelb 4, Gelb 5, Gelb 8, Gelb 9, Gelb 11, Rot 1, Rot 3, Rot 9, Blau 1, Blau 9, Schwarz 2, Schwarz 8, Schwarz 10, Schwarz 11]
+ˆHakan:[Joker, Gelb 1, Gelb 4, Gelb 6, Gelb 10, Gelb 12, Gelb 13, Rot 11, Rot 12, Rot 13, Blau 6, Blau 13, Schwarz 5, Schwarz 13, Heavy]
+ There is 1 winning combination.
+ˆThis combination is [[Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 7, Rot 8, Rot 9, Blau 1, Blau 2, Blau 3, Schwarz 4, Schwarz 5, Schwarz 6]]
+[]
+	 There is 1 winning combination.
+	This combination is [[Gelb 2, Gelb 6, Rot 1, Rot 2, Rot 4, Rot 6, Blau 1, Blau 2, Blau 4, Blau 6, Schwarz 1, Schwarz 2, Schwarz 4, Schwarz 6]]
+
+ There is 1 winning combination.
+
+‰This combination is [[Gelb 9, Gelb 10, Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 7, Rot 9, Rot 10, Blau 9, Blau 10, Schwarz 9, Schwarz 10]]
+ There is 1 winning combination.
+‚This combination is [[Gelb 9, Gelb 10, Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 9, Rot 10, Blau 9, Blau 10, Schwarz 9, Schwarz 10]]
+ There is 1 winning combination.
+lThis combination is [[Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 7, Rot 8, Rot 9, Rot 9, Rot 9, Rot 9, Rot 10]]
+ There is 1 winning combination.
+‹This combination is [[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9, Schwarz 10]]
+Hakan:[Gelb 1, Gelb 6, Gelb 7, Gelb 7, Gelb 13, Rot 1, Rot 11, Rot 12, Blau 4, Blau 5, Blau 11, Schwarz 1, Schwarz 9, Schwarz 9, Schwarz 11]
+‚Okan:[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9, Schwarz 10]
+~Okan:[Gelb 7, Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
+ˆHakan:[Gelb 7, Gelb 13, Rot 1, Rot 2, Rot 9, Rot 10, Rot 13, Blau 1, Blau 3, Blau 6, Blau 8, Blau 11, Schwarz 2, Schwarz 8, Schwarz 13]
+›[Match starts!!, Please throw the first Token, Hakan., The thrown Token is {Gelb 7}., It's Okans turn., Do you want to take the thrown Token {Gelb 7} or get a new one?, There is 1 winning combination., This combination is [[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]], The winner is Okan. Congratulations!!, The next match is about to start.
+
+
+
+
+[, Match starts!!, Please throw the first Token, Hakan., A player left or exited the game.]
+‰Hakan:[Gelb 2, Gelb 5, Gelb 6, Gelb 10, Rot 1, Rot 13, Blau 1, Blau 3, Blau 5, Blau 6, Blau 9, Blau 11, Schwarz 5, Schwarz 5, Schwarz 9]
+}Hakan:[Joker, Gelb 2, Gelb 8, Gelb 9, Rot 2, Rot 3, Rot 4, Rot 7, Rot 10, Rot 11, Rot 12, Blau 4, Blau 6, Blau 7, Schwarz 1]
+…Okan:[Gelb 3, Gelb 3, Gelb 5, Gelb 10, Rot 1, Rot 6, Rot 6, Rot 7, Rot 8, Blau 6, Blau 13, Schwarz 5, Schwarz 10, Schwarz 13, Heavy]
+™Hakan:[Gelb 3, Gelb 6, Gelb 7, Gelb 13, Rot 5, Blau 6, Blau 11, Schwarz 1, Schwarz 1, Schwarz 2, Schwarz 3, Schwarz 4, Schwarz 5, Schwarz 6, Schwarz 12]
+…Okan:[Gelb 2, Gelb 9, Rot 2, Rot 4, Rot 9, Rot 12, Rot 13, Blau 1, Blau 4, Blau 9, Blau 11, Schwarz 8, Schwarz 9, Schwarz 13, Heavy]
+‰Okan:[Gelb 2, Gelb 9, Rot 2, Rot 4, Rot 9, Rot 12, Rot 13, Blau 1, Blau 4, Blau 9, Blau 11, Schwarz 4, Schwarz 8, Schwarz 9, Schwarz 13]
+•Hakan:[Gelb 3, Gelb 6, Gelb 7, Gelb 13, Rot 5, Blau 6, Blau 11, Schwarz 1, Schwarz 1, Schwarz 2, Schwarz 3, Schwarz 4, Schwarz 5, Schwarz 12, Heavy]

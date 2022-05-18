@@ -39,15 +39,23 @@ class Game {
         currentMatch = new Match(players, out, this);
     }
 
+    public Game() {
+        newPlayers();
+        this.reader = new BufferedReader(reader);
+        this.out = out;
+        if (init() < 0) newPlayers();
+        currentMatch = new Match(players, out, this);
+    }
+
     public void start() {
         while (noOneLost()) {
             Player winner = currentMatch.start();
             if (winner == null) {
                 out.println("A player left or exited the game.");
-                endOfMatch(winner);
                 return;
             }
-            Match currentMatch = new Match(players, out, this);
+            endOfMatch(winner);
+            currentMatch = new Match(players, out, this);
         }
     }
 
@@ -91,7 +99,7 @@ class Game {
     private void newPlayers() {
         Scanner in = new Scanner(System.in);
 
-        out.println("Please enter the new player names.");
+        out.println("Please enter the player names.");
 
         String s = waitForInput(100);
 
@@ -104,7 +112,7 @@ class Game {
             printCandy();
             return;
         }
-        
+
         reducePoints(winner);
 
         if (noOneLost())

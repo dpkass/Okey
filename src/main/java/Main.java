@@ -6,7 +6,11 @@ public class Main {
 
         for (int i = 0; i < args.length; i++) playerList[i] = new Player(args[i]);
 
-        Game game = new Game(playerList);
+        Game game;
+        if (args.length != 0)
+            game = new Game(playerList);
+        else
+            game = new Game();
 
         game.start();
     }

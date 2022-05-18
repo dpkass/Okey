@@ -1,234 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="This test tests, if" tests="1" skipped="0" failures="1" errors="0" timestamp="2022-05-18T20:40:28" hostname="My MacBook Pro" time="311.019">
+<testsuite name="This test tests, if" tests="17" skipped="1" failures="0" errors="0" timestamp="2022-05-18T22:16:00" hostname="My MacBook Pro" time="0.198">
   <properties/>
-  <testcase name="the match will terminate after someone won the game." classname="MatchTest" time="311.019">
-    <failure message="java.lang.AssertionError: &#10;Expecting ArrayList:&#10;  [&quot;Match starts!!&quot;,&#10;    &quot;Please throw the first Token, Hakan.&quot;,&#10;    &quot;The thrown Token is {Schwarz 8}.&quot;,&#10;    &quot;It's Okans turn.&quot;,&#10;    &quot;Do you want to take the thrown Token {Schwarz 8} or get a new one?&quot;,&#10;    &quot;There is 1 winning combinations.&quot;,&#10;    &quot;These are [[Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]]&quot;,&#10;    &quot;It's Hakans turn.&quot;,&#10;    &quot;Do you want to take the thrown Token {Schwarz 8} or get a new one?&quot;,&#10;    &quot;The winner is Okan. Congratulations!!&quot;,&#10;    &quot;The next match is about to start.&#10;&#10;&#10;&#10;&#10;&quot;,&#10;    &quot;Match starts!!&quot;,&#10;    &quot;Please throw the first Token, Hakan.&quot;,&#10;    &quot;It's Okans turn.&quot;,&#10;    &quot;Do you want to take the thrown Token {Schwarz 8} or get a new one?&quot;,&#10;    &quot;The winner is Okan. Congratulations!!&quot;,&#10;    &quot;The next match is about to start.&#10;&#10;&#10;&#10;&#10;&quot;,&#10;    &quot;Match starts!!&quot;,&#10;    &quot;Please throw the first Token, Okan.&quot;,&#10;    &quot;The next match is about to start.&#10;&#10;&#10;&#10;&#10;&quot;,&#10;    &quot;Match starts!!&quot;,&#10;    &quot;Please throw the first Token, Okan.&quot;,&#10;    &quot;The next match is about to start.&#10;&#10;&#10;&#10;&#10;&quot;,&#10;    &quot;Match starts!!&quot;,&#10;    &quot;Please throw the first Token, Okan.&quot;,&#10;    &quot;You won the game!!&quot;,&#10;    &quot;Have a candy.&#10;&#10;&quot;,&#10;    &quot; .-&quot;&quot;-.      ___&#10;  \  &quot;-.  /      \  .-&quot;  /&#10;   &gt; -=.\/        \/.=- &lt;&#10;   &gt; -='/\        /\'=- &lt;&#10;  /__.-'  \      /  '-.__\&#10;           '-..-'&#10;    ____&#10;  .' /  '.&#10; /  (  .-'\&#10;|'.__\/__  |&#10;|    /\  '.|&#10; \.-'  )  /&#10;   '.__/_.'&#10;        ____&#10;      .' /:::.&#10;     /  (:::-'\&#10;    |:\__\/__  |&#10;    |::::/\:::\|&#10;     \::'  )::/&#10;       '.__/::'&#10;&quot;,&#10;    &quot;&#10;&#10;See you next time.&quot;]&#10;to contain:&#10;  [&quot;&quot;]&#10;but could not find the following element(s):&#10;  [&quot;&quot;]&#10;" type="java.lang.AssertionError">java.lang.AssertionError: 
-Expecting ArrayList:
-  [&quot;Match starts!!&quot;,
-    &quot;Please throw the first Token, Hakan.&quot;,
-    &quot;The thrown Token is {Schwarz 8}.&quot;,
-    &quot;It's Okans turn.&quot;,
-    &quot;Do you want to take the thrown Token {Schwarz 8} or get a new one?&quot;,
-    &quot;There is 1 winning combinations.&quot;,
-    &quot;These are [[Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]]&quot;,
-    &quot;It's Hakans turn.&quot;,
-    &quot;Do you want to take the thrown Token {Schwarz 8} or get a new one?&quot;,
-    &quot;The winner is Okan. Congratulations!!&quot;,
-    &quot;The next match is about to start.
-
-
-
-
-&quot;,
-    &quot;Match starts!!&quot;,
-    &quot;Please throw the first Token, Hakan.&quot;,
-    &quot;It's Okans turn.&quot;,
-    &quot;Do you want to take the thrown Token {Schwarz 8} or get a new one?&quot;,
-    &quot;The winner is Okan. Congratulations!!&quot;,
-    &quot;The next match is about to start.
-
-
-
-
-&quot;,
-    &quot;Match starts!!&quot;,
-    &quot;Please throw the first Token, Okan.&quot;,
-    &quot;The next match is about to start.
-
-
-
-
-&quot;,
-    &quot;Match starts!!&quot;,
-    &quot;Please throw the first Token, Okan.&quot;,
-    &quot;The next match is about to start.
-
-
-
-
-&quot;,
-    &quot;Match starts!!&quot;,
-    &quot;Please throw the first Token, Okan.&quot;,
-    &quot;You won the game!!&quot;,
-    &quot;Have a candy.
-
-&quot;,
-    &quot; .-&quot;&quot;-.      ___
-  \  &quot;-.  /      \  .-&quot;  /
-   &gt; -=.\/        \/.=- &lt;
-   &gt; -='/\        /\'=- &lt;
-  /__.-'  \      /  '-.__\
-           '-..-'
-    ____
-  .' /  '.
- /  (  .-'\
-|'.__\/__  |
-|    /\  '.|
- \.-'  )  /
-   '.__/_.'
-        ____
-      .' /:::.
-     /  (:::-'\
-    |:\__\/__  |
-    |::::/\:::\|
-     \::'  )::/
-       '.__/::'
-&quot;,
-    &quot;
-
-See you next time.&quot;]
-to contain:
-  [&quot;&quot;]
-but could not find the following element(s):
-  [&quot;&quot;]
-
-	at MatchTest.test_20(MatchTest.java:423)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
-	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:725)
-	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
-	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:149)
-	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:140)
-	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:84)
-	at org.junit.jupiter.engine.execution.ExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(ExecutableInvoker.java:115)
-	at org.junit.jupiter.engine.execution.ExecutableInvoker.lambda$invoke$0(ExecutableInvoker.java:105)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
-	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
-	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:104)
-	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:98)
-	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:214)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:210)
-	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:135)
-	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:66)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
-	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
-	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
-	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
-	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
-	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
-	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
-	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
-	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
-	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
-	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:96)
-	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:75)
-	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:99)
-	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:79)
-	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:75)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:61)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:94)
-	at jdk.proxy1/jdk.proxy1.$Proxy2.stop(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.stop(TestWorker.java:135)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:182)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:164)
-	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:414)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
-	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
-	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:56)
-	at java.base/java.lang.Thread.run(Thread.java:831)
-</failure>
+  <testcase name="the match announces the right players name." classname="MatchTest" time="0.007"/>
+  <testcase name="the match waits for input." classname="MatchTest" time="0.0">
+    <skipped/>
   </testcase>
-  <system-out><![CDATA[Hakan:[Gelb 6, Gelb 8, Rot 4, Rot 7, Rot 10, Rot 13, Blau 1, Blau 1, Blau 2, Blau 8, Blau 11, Schwarz 7, Schwarz 7, Schwarz 8, Schwarz 11]
-Okan:[Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9, Schwarz 10]
-Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-Hakan:[Gelb 6, Gelb 8, Rot 4, Rot 7, Rot 10, Rot 13, Blau 1, Blau 1, Blau 2, Blau 8, Blau 11, Schwarz 7, Schwarz 7, Schwarz 11, Heavy]
-Hakan:[Gelb 6, Gelb 8, Rot 4, Rot 7, Rot 10, Rot 13, Blau 1, Blau 1, Blau 2, Blau 8, Blau 11, Schwarz 7, Schwarz 7, Schwarz 11, Heavy]
-Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-Okan:[Gelb 3, Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-[Match starts!!, Please throw the first Token, Hakan., The thrown Token is {Schwarz 8}., It's Okans turn., Do you want to take the thrown Token {Schwarz 8} or get a new one?, There is 1 winning combinations., These are [[Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]], It's Hakans turn., Do you want to take the thrown Token {Schwarz 8} or get a new one?, The winner is Okan. Congratulations!!, The next match is about to start.
+  <testcase name="a player with a winning hand is declared the winner (Only Straight). 1 Straight of 8, 2 of 3." classname="MatchTest" time="0.038"/>
+  <testcase name="a player with a winning hand is declared the winner (Only Flush). 2 flushes of 4, 2 of 3." classname="MatchTest" time="0.002"/>
+  <testcase name="a player with a winning hand is declared the winner (No Joker). 1 straight of 6. 2 flushes of 4" classname="MatchTest" time="0.01"/>
+  <testcase name="a player with a winning hand is declared the winner (one Joker). 1 straight of 5. 2 flushes of 4" classname="MatchTest" time="0.003"/>
+  <testcase name="a player with a winning hand is declared the winner (two Joker). 1 straight of 8. 2 flushes of 2" classname="MatchTest" time="0.108"/>
+  <testcase name="a player without winning hand is told not to have won." classname="MatchTest" time="0.001"/>
+  <testcase name="a player with a winning hand is declared the winner. Flush warp around (12-&gt;13-&gt;1)." classname="MatchTest" time="0.002"/>
+  <testcase name="the match will terminate after someone won the game." classname="MatchTest" time="0.01"/>
+  <testcase name="two players and then a match can be instantiated." classname="MatchTest" time="0.0"/>
+  <testcase name="when we have an instance of a match the first player has a hand of tokens, with 15 Tokens (no null)." classname="MatchTest" time="0.004"/>
+  <testcase name="when we have an instance of a match the all other players, but the first, have a hand of tokens, with 14 Tokens and one heavy." classname="MatchTest" time="0.001"/>
+  <testcase name="when we have an instance of a match the the players have different hands of tokens." classname="MatchTest" time="0.001"/>
+  <testcase name="the match starts, greets and asks the player to throw a token." classname="MatchTest" time="0.0"/>
+  <testcase name="the match answers to a thrown token, which was in ones hand, correctly (first  player)." classname="MatchTest" time="0.001"/>
+  <testcase name="the match asks which Token the player wants and answers to a thrown token, which was in ones hand, correctly (second player)." classname="MatchTest" time="0.001"/>
+  <system-out><![CDATA[Hakan:[Joker, Gelb 1, Gelb 4, Gelb 6, Gelb 10, Gelb 12, Gelb 13, Rot 11, Rot 12, Rot 13, Blau 6, Blau 12, Blau 13, Schwarz 5, Schwarz 13]
+Okan:[Gelb 3, Gelb 5, Gelb 8, Gelb 9, Gelb 11, Rot 1, Rot 3, Rot 9, Blau 1, Blau 9, Schwarz 2, Schwarz 8, Schwarz 10, Schwarz 11, Heavy]
+Okan:[Gelb 3, Gelb 4, Gelb 5, Gelb 8, Gelb 9, Gelb 11, Rot 1, Rot 3, Rot 9, Blau 1, Blau 9, Schwarz 2, Schwarz 8, Schwarz 10, Schwarz 11]
+Hakan:[Joker, Gelb 1, Gelb 4, Gelb 6, Gelb 10, Gelb 12, Gelb 13, Rot 11, Rot 12, Rot 13, Blau 6, Blau 13, Schwarz 5, Schwarz 13, Heavy]
+There is 1 winning combination.
+This combination is [[Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 7, Rot 8, Rot 9, Blau 1, Blau 2, Blau 3, Schwarz 4, Schwarz 5, Schwarz 6]]
+[]
+There is 1 winning combination.
+This combination is [[Gelb 2, Gelb 6, Rot 1, Rot 2, Rot 4, Rot 6, Blau 1, Blau 2, Blau 4, Blau 6, Schwarz 1, Schwarz 2, Schwarz 4, Schwarz 6]]
+There is 1 winning combination.
+This combination is [[Gelb 9, Gelb 10, Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 7, Rot 9, Rot 10, Blau 9, Blau 10, Schwarz 9, Schwarz 10]]
+There is 1 winning combination.
+This combination is [[Gelb 9, Gelb 10, Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 9, Rot 10, Blau 9, Blau 10, Schwarz 9, Schwarz 10]]
+There is 1 winning combination.
+This combination is [[Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 7, Rot 8, Rot 9, Rot 9, Rot 9, Rot 9, Rot 10]]
+There is 1 winning combination.
+This combination is [[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9, Schwarz 10]]
+Hakan:[Gelb 1, Gelb 6, Gelb 7, Gelb 7, Gelb 13, Rot 1, Rot 11, Rot 12, Blau 4, Blau 5, Blau 11, Schwarz 1, Schwarz 9, Schwarz 9, Schwarz 11]
+Okan:[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9, Schwarz 10]
+Okan:[Gelb 7, Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
+Hakan:[Gelb 7, Gelb 13, Rot 1, Rot 2, Rot 9, Rot 10, Rot 13, Blau 1, Blau 3, Blau 6, Blau 8, Blau 11, Schwarz 2, Schwarz 8, Schwarz 13]
+[Match starts!!, Please throw the first Token, Hakan., The thrown Token is {Gelb 7}., It's Okans turn., Do you want to take the thrown Token {Gelb 7} or get a new one?, There is 1 winning combination., This combination is [[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]], The winner is Okan. Congratulations!!, The next match is about to start.
 
 
 
 
-, Match starts!!, Please throw the first Token, Hakan., It's Okans turn., Do you want to take the thrown Token {Schwarz 8} or get a new one?, The winner is Okan. Congratulations!!, The next match is about to start.
-
-
-
-
-, Match starts!!, Please throw the first Token, Okan., The next match is about to start.
-
-
-
-
-, Match starts!!, Please throw the first Token, Okan., The next match is about to start.
-
-
-
-
-, Match starts!!, Please throw the first Token, Okan., You won the game!!, Have a candy.
-
-,  .-""-.      ___
-  \  "-.  /      \  .-"  /
-   > -=.\/        \/.=- <
-   > -='/\        /\'=- <
-  /__.-'  \      /  '-.__\
-           '-..-'
-    ____
-  .' /  '.
- /  (  .-'\
-|'.__\/__  |
-|    /\  '.|
- \.-'  )  /
-   '.__/_.'
-        ____
-      .' /:::.
-     /  (:::-'\
-    |:\__\/__  |
-    |::::/\:::\|
-     \::'  )::/
-       '.__/::'
-, 
-
-See you next time.]
+, Match starts!!, Please throw the first Token, Hakan., A player left or exited the game.]
+Hakan:[Gelb 2, Gelb 5, Gelb 6, Gelb 10, Rot 1, Rot 13, Blau 1, Blau 3, Blau 5, Blau 6, Blau 9, Blau 11, Schwarz 5, Schwarz 5, Schwarz 9]
+Hakan:[Joker, Gelb 2, Gelb 8, Gelb 9, Rot 2, Rot 3, Rot 4, Rot 7, Rot 10, Rot 11, Rot 12, Blau 4, Blau 6, Blau 7, Schwarz 1]
+Okan:[Gelb 3, Gelb 3, Gelb 5, Gelb 10, Rot 1, Rot 6, Rot 6, Rot 7, Rot 8, Blau 6, Blau 13, Schwarz 5, Schwarz 10, Schwarz 13, Heavy]
+Hakan:[Gelb 3, Gelb 6, Gelb 7, Gelb 13, Rot 5, Blau 6, Blau 11, Schwarz 1, Schwarz 1, Schwarz 2, Schwarz 3, Schwarz 4, Schwarz 5, Schwarz 6, Schwarz 12]
+Okan:[Gelb 2, Gelb 9, Rot 2, Rot 4, Rot 9, Rot 12, Rot 13, Blau 1, Blau 4, Blau 9, Blau 11, Schwarz 8, Schwarz 9, Schwarz 13, Heavy]
+Okan:[Gelb 2, Gelb 9, Rot 2, Rot 4, Rot 9, Rot 12, Rot 13, Blau 1, Blau 4, Blau 9, Blau 11, Schwarz 4, Schwarz 8, Schwarz 9, Schwarz 13]
+Hakan:[Gelb 3, Gelb 6, Gelb 7, Gelb 13, Rot 5, Blau 6, Blau 11, Schwarz 1, Schwarz 1, Schwarz 2, Schwarz 3, Schwarz 4, Schwarz 5, Schwarz 12, Heavy]
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

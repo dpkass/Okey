@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="This test tests, if" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-05-18T22:16:00" hostname="My MacBook Pro" time="0.044">
+  <properties/>
+  <testcase name="a game can be instantiated." classname="GameTest" time="0.03"/>
+  <testcase name="a game can't have only one player." classname="GameTest" time="0.011"/>
+  <testcase name="players can't have the same name." classname="GameTest" time="0.002"/>
+  <system-out><![CDATA[[Players must not have the same name., Please enter the player names., There is a minimum of two players and a maximum of four in this match.]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -137,6 +137,8 @@ the winners and the two with the lowest scores are the losers.
 My version of the game is slighty different. I don't choose a seperate Joker, but just use the "fake" ones, since the
 idea of cheating doesn't apply here.
 
-###  
+### Run
+
+To start the Emualtor, just run the
 
 #### I'm thinking of trying to optimize (with AI tools) the way of playing the match as a player. Either in this or another repo. I will leave the link here, if I were to do so.

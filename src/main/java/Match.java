@@ -110,7 +110,6 @@ class Match {
         showHand();
         out.println("Please throw the first Token, " + players[currentPlayer] + ".");
         if (thrownToken() < 0) return -1;
-        nextPlayer();
         return 0;
     }
 
@@ -119,10 +118,10 @@ class Match {
      */
     private void play() {
         while (winner == null) {
+            nextPlayer();
             if (giveToken() < 0) return;
             showHand();
             if (thrownToken() < 0) return;
-            nextPlayer();
         }
         out.println("The winner is " + winner + ". Congratulations!!");
     }
@@ -178,7 +177,7 @@ class Match {
                 else return -1;
         } catch (IllegalArgumentException e) {
             out.println("Invalid Argument. Please write the color of your token and then the number e.g. \"Gelb 5\". For Joker, write \"Joker\".");
-            thrownToken();
+            return thrownToken();
         }
 
         if (!isInCurrPlayersHand(thrown)) {
@@ -381,57 +380,6 @@ class Match {
      * @param offset amount of possible skips
      * @return all straights in the hand of the current player
      */
-    private List<Token[]> getAllStraightsInCurrPlayersHand2(int offset) {
-        List<Token[]> res = new ArrayList<>();
-        Token[] tokens = players[currentPlayer].hand;
-        int tempOffset = offset, jokerInsert = -1;
-
-        Arrays.sort(players[currentPlayer].hand);
-
-        Set<Token> partRes = new HashSet<>();
-        for (int i = 0; i < tokens.length - 1; i++) {       // -1 since last one is HEAVY
-            Token curr = tokens[i];
-            partRes.add(curr);
-            List<Token> temp;
-            if (curr.getNumber() == 13
-                    &&
-                    (temp = Arrays.stream(tokens).filter(t -> t.getColor() == curr.getColor()).filter(t -> t.getNumber() == 0).collect(Collectors.toList())).size() == 1)
-                partRes.add(temp.get(0));
-
-            if (curr.getColor() != tokens[i + 1].getColor() || curr.getNumber() + 1 + tempOffset < tokens[i + 1].getNumber()) { // Colors are not the same or numbers are not consecutive (even with all jokers the player has)
-                if (partRes.size() < 3) partRes.clear();
-                else {
-                    res.addAll(new Sets<Token>().subsetsWithMinSize(partRes.stream().toList(), 3));
-                    partRes.clear();
-                    tempOffset = offset;
-                    if (jokerInsert != -1)
-                        i = jokerInsert;
-                    jokerInsert = -1;
-                }
-            } else if (curr.getNumber() + 2 == tokens[i + 1].getNumber() && tempOffset >= 1) {                     // 1 joker is needed to fill
-                tempOffset--;
-                jokerInsert = i + 1;
-                partRes.add(joker);
-            } else if (curr.getNumber() + 3 == tokens[i + 1].getNumber() && tempOffset == 2) {                     // 2 jokers are needed to fill
-                tempOffset--;
-                tempOffset--;
-                jokerInsert = i + 1;
-                partRes.add(joker);
-                partRes.add(joker);
-            }
-        }
-        return res;
-    }
-
-    /**
-     * Calculates all straights in the hand of the current player. A straight is an at least 3 token long sequence,
-     * where the tokens have the same color and consecutive numbers.
-     * <p>
-     * Depending on the amount of jokers there might be an offset, where the joker would fit in.
-     *
-     * @param offset amount of possible skips
-     * @return all straights in the hand of the current player
-     */
     private List<Token[]> getAllStraightsInCurrPlayersHand(int offset) {
         List<Token[]> res = new ArrayList<>();
         Token[] tokens = players[currentPlayer].hand;
@@ -455,7 +403,8 @@ class Match {
 
         for (int i = 0; i < list.size(); i++) {
             int distanceToNext = list.get((i + 1) % list.size()).getNumber() - list.get(i).getNumber();
-            temp.add(list.get(i));
+            if (!temp.contains(list.get(i)))
+                temp.add(list.get(i));
 
             if (distanceToNext < 0)
                 if ((distanceToNext += 13) == 1)
@@ -474,7 +423,7 @@ class Match {
                 temp.add(joker);
             }
 
-            if (distanceToNext > 3 || i == list.size() - 1) {
+            if (distanceToNext > tempJoker + 1 || i == list.size() - 1) {
                 if (temp.size() > 2) {
                     res.addAll(new Sets().subsetsWithMinSize(temp, 3));
                     i = jokerInsert == -1 ? i : jokerInsert;

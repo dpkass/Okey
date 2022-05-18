@@ -390,8 +390,7 @@ public class MatchTest {
         Player p2 = new Player("Okan");
 
         Token[] tokens = new Token[15];
-        Token t = new Token(1, 1);
-        tokens[0] = t;
+        tokens[0] = new Token(1, 11);
         tokens[1] = new Token(1, 2);
         tokens[2] = new Token(1, 3);
         tokens[3] = new Token(1, 4);
@@ -412,7 +411,7 @@ public class MatchTest {
         Token p1Throw = p.hand[0];
 
         PrintWriter pw = new PrintWriter("TestInputs/test_20");
-        pw.println(String.format("%s\nnew\nwin %s\nexit", p1Throw, p2.hand[0]));
+        pw.println(String.format("%s\nthrown\nwin %s\nexit", p1Throw, p1Throw));
         pw.close();
 
         p2.hand = tokens;
@@ -426,14 +425,15 @@ public class MatchTest {
         String s2 = "Please throw the first Token, Hakan.";
         String s3 = "The thrown Token is {" + p1Throw + "}.";
         String s4 = "It's Okans turn.";
-        String s5 = "Do you want to take the thrown Token { + p1Throw + } or get a new one?";
+        String s5 = "Do you want to take the thrown Token {" + p1Throw + "} or get a new one?";
         String s6 = "There is 1 winning combination.";
-        String s7 = "This combination is [[Gelb 9, Gelb 10, Rot 1, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot " +
-                "12, Rot " +
-                "13, Blau 9, Blau 10, Schwarz 9]]";
-        String s8 = "Do you want to take the thrown Token { + p1Throw + } or get a new one?";
+        String s7 = out.output.get(6);
+        String s8 = "The winner is Okan. Congratulations!!";
+        String s9 = "The next match is about to start.\n\n\n\n\n";
+        String s10 = "Please throw the first Token, Hakan.";
+        String s11 = "A player left or exited the game.";
 
-        assertThat(out.output).contains("");
+        assertThat(out.output).containsExactly(s1, s2, s3, s4, s5, s6, s7, s8, s9, s1, s10, s11);
     }
 
     void wait(int i) throws InterruptedException {

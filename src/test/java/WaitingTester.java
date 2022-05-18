@@ -3,9 +3,9 @@ import java.io.IOException;
 public class WaitingTester implements Runnable {
     private Thread t;
     private String name;
-    private Game g;
+    private Match g;
 
-    WaitingTester(String name, Game g) {
+    WaitingTester(String name, Match g) {
         this.name = name;
         this.g = g;
     }

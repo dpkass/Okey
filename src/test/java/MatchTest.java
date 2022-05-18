@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("This test tests, if ")
-public class GameTest {
+public class MatchTest {
     private static final Token HEAVY = new Token(Token.HEAVY, -1);
     FakeOutput out = new FakeOutput();
 
@@ -26,14 +26,14 @@ public class GameTest {
     void test_2() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        new Game(new Player[]{p, p2});
+        new Match(new Player[]{p, p2});
     }
 
     @Test
     @DisplayName("an Exception is thrown when a game is instantiated with one player.")
     void test_3() {
         Player p = new Player("Hakan");
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new Game(new Player[]{p}));
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new Match(new Player[]{p}));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class GameTest {
     void test_6() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        new Game(new Player[]{p, p2});
+        new Match(new Player[]{p, p2});
 
         assertThat(p.hand).isNotEqualTo(p2.hand);
     }
@@ -50,7 +50,7 @@ public class GameTest {
     @DisplayName("when we have an instance of a game the first player has a hand of tokens, with 15 Tokens (no null).")
     void test_4() {
         Player p = new Player("Hakan");
-        new Game(new Player[]{p, p});
+        new Match(new Player[]{p, p});
         assertThat(p.hand).isNotNull();
         assertThat(p.hand).isNotEmpty();
         assertThat(p.hand).doesNotContain((Token) null);
@@ -63,7 +63,7 @@ public class GameTest {
         Player p2 = new Player("Okan");
         Player p3 = new Player("Tarkan");
 
-        new Game(new Player[]{p, p2, p3});
+        new Match(new Player[]{p, p2, p3});
         assertThat(p2.hand).isNotNull();
         assertThat(p2.hand).isNotEmpty();
         assertThat(p2.hand[14]).usingComparator(Token::compareToStatic).isEqualTo(HEAVY);
@@ -78,11 +78,11 @@ public class GameTest {
     void test_7() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, out, new StringReader("exit"));
+        Match g = new Match(new Player[]{p, p2}, out, new StringReader("exit"));
 
         g.start();
 
-        assertThat(out.output).contains("Game starts!!");
+        assertThat(out.output).contains("Match starts!!");
         assertThat(out.output).contains("Please throw the first Token, " + p + ".");
     }
 
@@ -91,7 +91,7 @@ public class GameTest {
     void test_8() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, out, new FileReader("TestInputs/test_8"));
+        Match g = new Match(new Player[]{p, p2}, out, new FileReader("TestInputs/test_8"));
 
         Token t;
 
@@ -109,7 +109,7 @@ public class GameTest {
     void test_9() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, out, new FileReader("TestInputs/test_9"));
+        Match g = new Match(new Player[]{p, p2}, out, new FileReader("TestInputs/test_9"));
 
         Token t, t2;
 
@@ -128,7 +128,7 @@ public class GameTest {
     void test_10() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, out, new FileReader("TestInputs/test_10"));
+        Match g = new Match(new Player[]{p, p2}, out, new FileReader("TestInputs/test_10"));
 
         PrintWriter pw = new PrintWriter("TestInputs/test_10");
         pw.println(String.format("%s\nnew\n%s\nexit", p.hand[0], p2.hand[0]));
@@ -141,7 +141,7 @@ public class GameTest {
     }
 
     /**
-     * Here I have to multithread, in order to be able to write something while Game is running.
+     * Here I have to multithread, in order to be able to write something while Match is running.
      * <p>
      * Disabled because Multithreading didn't quite work.
      */
@@ -151,7 +151,7 @@ public class GameTest {
     void test_11() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, out, new FileReader("TestInputs/test_11"));
+        Match g = new Match(new Player[]{p, p2}, out, new FileReader("TestInputs/test_11"));
 
         WaitingTester wt = new WaitingTester("Test 11", g);
         wt.start();
@@ -178,7 +178,7 @@ public class GameTest {
     void test_13() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2});
+        Match g = new Match(new Player[]{p, p2});
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -209,7 +209,7 @@ public class GameTest {
     void test_14() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2});
+        Match g = new Match(new Player[]{p, p2});
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -240,7 +240,7 @@ public class GameTest {
     void test_15() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2});
+        Match g = new Match(new Player[]{p, p2});
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -271,7 +271,7 @@ public class GameTest {
     void test_16() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2});
+        Match g = new Match(new Player[]{p, p2});
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -302,7 +302,7 @@ public class GameTest {
     void test_17() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2});
+        Match g = new Match(new Player[]{p, p2});
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -333,7 +333,7 @@ public class GameTest {
     void test_18() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2});
+        Match g = new Match(new Player[]{p, p2});
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -365,7 +365,7 @@ public class GameTest {
     void test_19() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2});
+        Match g = new Match(new Player[]{p, p2});
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);

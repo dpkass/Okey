@@ -3,21 +3,15 @@ import java.io.IOException;
 public class WaitingTester implements Runnable {
     private Thread t;
     private String name;
-    private Match g;
+    private Game g;
 
-    WaitingTester(String name, Match g) {
+    WaitingTester(String name, Game g) {
         this.name = name;
         this.g = g;
     }
 
     public void run() {
-        try {
-            g.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        g.start();
     }
 
     public void start() {

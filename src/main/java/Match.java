@@ -1,14 +1,11 @@
+import Output.KonsoleOutput;
 import Output.Output;
 import SpecialSets.Sets;
-import Output.KonsoleOutput;
 
-import java.io.*;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 class Match {
-    final int maxWaitTime = 100;
     Game game;
     Map<Player, Token[]> playerHandMap = new HashMap<>();
     Player[] players;
@@ -17,30 +14,17 @@ class Match {
     Token joker = new Token(-1, -1);
     Token lastThrown = null;
     Player winner = null;
-    BufferedReader reader;
     Output out;
 
-
-    Match(Player[] players, Output out, Reader reader) {
-        if (players.length < 2 || players.length > 4)
-            throw new IllegalArgumentException("There is a minimum of two players and a maximum of four in this match.");
-        this.reader = new BufferedReader(reader);
+    Match(Player[] players, Output out, Game game) {
         this.players = players;
         this.out = out;
+        this.game = game;
         init();
     }
 
-    Match(Player[] players, Output out) {
-        this(players, out, new BufferedReader(new InputStreamReader(System.in)));
-    }
-
-    Match(Player[] players) {
-        this(players, new KonsoleOutput());
-    }
-
-    Match(Player[] players, Game g) {
-        this(players);
-        this.game = game;
+    Match(Player[] players, Game game) {
+        this(players, new KonsoleOutput(), game);
     }
 
 
@@ -131,7 +115,7 @@ class Match {
             if (thrownToken() < 0) return;
             nextPlayer();
         }
-        out.println("The winner is " + winner + ". Congratulation!!");
+        out.println("The winner is " + winner + ". Congratulations!!");
     }
 
     /**
@@ -151,7 +135,7 @@ class Match {
      * @return 0 means player got his Token. -1 means player wants to exit or player didn't respond.
      */
     private int giveToken() {
-        String s = waitForInput(100);
+        String s = game.waitForInput(100);
         if (s == null) return -1;
 
         switch (s) {
@@ -174,7 +158,7 @@ class Match {
      * @return 0 means the match finished with a winner. -1 means player wants to exitor player didn't respond.
      */
     private int thrownToken() {
-        String s = waitForInput(100);
+        String s = game.waitForInput(100);
         if (s == null) return -1;
         Token thrown = null;
 
@@ -211,25 +195,6 @@ class Match {
             }
         }
         throw new IllegalArgumentException();
-    }
-
-    /**
-     * Waits for Input.
-     *
-     * @param waitTime periodical wait time between each check
-     * @return String which was read from Input
-     * @field maxWaitTime determines maximum amount of seconds to wait
-     */
-    private String waitForInput(int waitTime) {
-        String s = "exit";
-        int i = 0;
-        synchronized (TimeUnit.MILLISECONDS) {
-            try {
-                while ((s = reader.readLine()) == null && (i += waitTime) < maxWaitTime * 1000)
-                    TimeUnit.MILLISECONDS.wait(waitTime);
-            } catch (Exception e) {}
-        }
-        return "exit".equals(s) ? null : s;
     }
 
     /**
@@ -310,7 +275,7 @@ class Match {
         combinations.addAll(getAllStraightsInCurrPlayersHand(jokerCount));
         combinations.addAll(getAllFlushesInCurrPlayersHand());
 
-        Set<Set<Token[]>> powerSet = new Sets<Token[]>().powerSetWithMaxSize(combinations, 4);
+        Set<Set<Token[]>> powerSet = (Set<Set<Token[]>>) new Sets<Token[]>().powerSetWithMaxSize(combinations, 4);
         Set<Token[]> cleanPowerSet = reduce(powerSet);
 
         return cleanPowerSet.size() - countNonWinningCombinations(cleanPowerSet, jokerCount) >= 1;
@@ -340,10 +305,11 @@ class Match {
         Set<Token[]> res = new HashSet<>();
         for (Set<Token[]> set : powerSet) {
             int elements = 0, i = 0;
-            for (Token[] t : set) elements += t.length;
+            for (Object[] t : set)
+                elements += t.length;
 
             Token[] t = new Token[elements];
-            for (Token[] tokens : set) for (Token token : tokens) t[i++] = token;
+            for (Object[] tokens : set) for (Object token : tokens) t[i++] = (Token) token;
 
             res.add(t);
         }

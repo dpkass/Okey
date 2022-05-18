@@ -7,7 +7,7 @@ group 'org.example'
 version '1.0-SNAPSHOT'
 
 ext {
-    javaMainClass = "java.main.Main"
+    javaMainClass = "main.java.Main"
 }
 
 repositories {

@@ -45,6 +45,14 @@ public class Token implements Comparable {
         return (s.getColor() == color && s.getNumber() == number);
     }
 
+    Token successor() {
+        return new Token(this.color, this.number + 1 == 14 ? 1 : this.number + 1);
+    }
+
+    Token predecessor() {
+        return new Token(this.color, this.number - 1 == 0 ? 1 : this.number - 1);
+    }
+
     @Override
     public String toString() {
         String s = "";

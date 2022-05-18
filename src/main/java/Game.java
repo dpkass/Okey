@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class Game {
+class Game {
     final int maxWaitTime = 100;
 
     private Player[] players;
@@ -42,8 +42,11 @@ public class Game {
     public void start() {
         while (noOneLost()) {
             Player winner = currentMatch.start();
-            if (winner == null) return;
-            endOfMatch(winner);
+            if (winner == null) {
+                out.println("A player left or exited the game.");
+                endOfMatch(winner);
+                return;
+            }
             Match currentMatch = new Match(players, out, this);
         }
     }
@@ -97,37 +100,46 @@ public class Game {
     }
 
     private void endOfMatch(Player winner) {
+        if (winner == null) {
+            printCandy();
+            return;
+        }
+        
         reducePoints(winner);
 
         if (noOneLost())
             out.println("The next match is about to start.\n\n\n\n\n");
         else {
             out.println("You won the game!!");
-            out.println("Have a candy.\n\n");
-            out.println("""
-                         .-""-.      ___
-                          \\  "-.  /      \\  .-"  /
-                           > -=.\\/        \\/.=- <
-                           > -='/\\        /\\'=- <
-                          /__.-'  \\      /  '-.__\\
-                                   '-..-'
-                            ____
-                          .' /  '.
-                         /  (  .-'\\
-                        |'.__\\/__  |
-                        |    /\\  '.|
-                         \\.-'  )  /
-                           '.__/_.'
-                                ____
-                              .' /:::.
-                             /  (:::-'\\
-                            |:\\__\\/__  |
-                            |::::/\\:::\\|
-                             \\::'  )::/
-                               '.__/::'
-                        """);
+            printCandy();
             out.println("\n\nSee you next time.");
         }
+    }
+
+    private void printCandy() {
+        out.println("Have some candy.\n\n");
+        out.println("""
+                     .-""-.      ___
+                      \\  "-.  /      \\  .-"  /
+                       > -=.\\/        \\/.=- <
+                       > -='/\\        /\\'=- <
+                      /__.-'  \\      /  '-.__\\
+                               '-..-'
+                        ____
+                      .' /  '.
+                     /  (  .-'\\
+                    |'.__\\/__  |
+                    |    /\\  '.|
+                     \\.-'  )  /
+                       '.__/_.'
+                            ____
+                          .' /:::.
+                         /  (:::-'\\
+                        |:\\__\\/__  |
+                        |::::/\\:::\\|
+                         \\::'  )::/
+                           '.__/::'
+                    """);
     }
 
     private void reducePoints(Player winner) {

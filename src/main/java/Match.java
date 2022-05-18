@@ -3,7 +3,12 @@ import Output.Output;
 import SpecialSets.Sets;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 class Match {
     Game game;
@@ -27,6 +32,10 @@ class Match {
         this(players, new KonsoleOutput(), game);
     }
 
+    public static Predicate<Token[]> distinctByKey(Function<? super Token[], ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
+    }
 
     /**
      * Starts the match.
@@ -35,7 +44,7 @@ class Match {
      * round.
      */
     public Player start() {
-        if (playFirst() == -1) return winner;
+        if (playFirst() == -1) return null;
         play();
         return winner;
     }
@@ -156,7 +165,7 @@ class Match {
     /**
      * Tests if a player threw a Token that he has in his hand. If he did, his hand will be adjusted.
      *
-     * @return 0 means the match finished with a winner. -1 means player wants to exitor player didn't respond.
+     * @return 0 means the match finished with a winner. -1 means player wants to exit or player didn't respond.
      */
     private int thrownToken() {
         String s = game.waitForInput(100);
@@ -256,10 +265,10 @@ class Match {
     /**
      * Displays the hand of the current player.
      */
-    Map showHand() {
+    Map<Player, Token[]> showHand() {
         Arrays.sort(players[currentPlayer].hand);
         System.out.println(playerHandMap.entrySet().stream().filter(e -> e.getKey() == players[currentPlayer]).map(e -> e.getKey() + ":" + Arrays.toString(e.getValue()))
-                .collect(Collectors.joining("|")));
+                                        .collect(Collectors.joining("|")));
         return playerHandMap;
     }
 
@@ -279,25 +288,42 @@ class Match {
         combinations.addAll(getAllStraightsInCurrPlayersHand(jokerCount));
         combinations.addAll(getAllFlushesInCurrPlayersHand());
 
-        Set<Set<Token[]>> powerSet = (Set<Set<Token[]>>) new Sets<Token[]>().powerSetWithMaxSize(combinations, 4);
+        Set<Set<Token[]>> powerSet = new Sets<Token[]>().powerSetWithMaxSize(combinations, 4);
         Set<Token[]> cleanPowerSet = reduce(powerSet);
 
-        return cleanPowerSet.size() - countNonWinningCombinations(cleanPowerSet, jokerCount) >= 1;
+        cleanPowerSet = removeNonWinningCombinations(cleanPowerSet, jokerCount);
+
+        printCombinations(cleanPowerSet);
+
+        return cleanPowerSet.size() > 0;
+    }
+
+    private void printCombinations(Set<Token[]> cleanPowerSet) {
+        out.println(String.format("There %s %d winning combination%s.", cleanPowerSet.size() == 1 ? "is" : "are",
+                cleanPowerSet.size(), cleanPowerSet.size() == 1 ? "" : "s"));
+        if (cleanPowerSet.size() == 1) out.println(String.format("This combination is %s",
+                Arrays.deepToString(cleanPowerSet.toArray())));
+        else out.println(String.format("These combinations are %s",
+                Arrays.deepToString(cleanPowerSet.toArray())));
     }
 
     /**
-     * Counts how many of the remaining combinations are not winning
+     * Counts how many of the remaining combinations are not winning and removes them from the given set.
      *
-     * @param set PowerSet of all combinations
+     * @param set    PowerSet of all combinations
+     * @param jokers amount of jokers the player has
      */
-    private int countNonWinningCombinations(Set<Token[]> set, int jokers) {
-        int i = 0;
-        for (Token[] t : set) {
-            int availableJokers = jokers - countJokers(t);
-            if (t.length + availableJokers != 14)
-                i++;
-        }
-        return i;
+    private Set<Token[]> removeNonWinningCombinations(Set<Token[]> set, int jokers) {
+        return set.stream().filter(v -> (v.length + jokers - countJokers(v) == 14)).filter(this::hasNoDuplicates).filter(distinctByKey(Arrays::toString)).collect(Collectors.toSet());         // remove arrays with too few or many token
+    }
+
+    private boolean hasNoDuplicates(Token[] t) {
+        Arrays.sort(t);
+
+        for (int i = 0; i < t.length - 1; i++)
+            if (t[i] == t[i + 1]) return false;
+
+        return true;
     }
 
     /**
@@ -311,6 +337,8 @@ class Match {
             int elements = 0, i = 0;
             for (Object[] t : set)
                 elements += t.length;
+
+            if (elements < 12 || elements > 14) continue;
 
             Token[] t = new Token[elements];
             for (Object[] tokens : set) for (Object token : tokens) t[i++] = (Token) token;
@@ -353,7 +381,7 @@ class Match {
      * @param offset amount of possible skips
      * @return all straights in the hand of the current player
      */
-    private List<Token[]> getAllStraightsInCurrPlayersHand(int offset) {
+    private List<Token[]> getAllStraightsInCurrPlayersHand2(int offset) {
         List<Token[]> res = new ArrayList<>();
         Token[] tokens = players[currentPlayer].hand;
         int tempOffset = offset, jokerInsert = -1;
@@ -362,10 +390,15 @@ class Match {
 
         Set<Token> partRes = new HashSet<>();
         for (int i = 0; i < tokens.length - 1; i++) {       // -1 since last one is HEAVY
-            partRes.add(tokens[i]);
-            if (tokens[i].getNumber() == 13 && tokens[0].getNumber() == 1) partRes.add(tokens[0]);
+            Token curr = tokens[i];
+            partRes.add(curr);
+            List<Token> temp;
+            if (curr.getNumber() == 13
+                    &&
+                    (temp = Arrays.stream(tokens).filter(t -> t.getColor() == curr.getColor()).filter(t -> t.getNumber() == 0).collect(Collectors.toList())).size() == 1)
+                partRes.add(temp.get(0));
 
-            if (tokens[i].getColor() != tokens[i + 1].getColor() || tokens[i].getNumber() + 1 + tempOffset < tokens[i + 1].getNumber()) { // Colors are not the same or numbers are not consecutive (even with all jokers the player has)
+            if (curr.getColor() != tokens[i + 1].getColor() || curr.getNumber() + 1 + tempOffset < tokens[i + 1].getNumber()) { // Colors are not the same or numbers are not consecutive (even with all jokers the player has)
                 if (partRes.size() < 3) partRes.clear();
                 else {
                     res.addAll(new Sets<Token>().subsetsWithMinSize(partRes.stream().toList(), 3));
@@ -375,16 +408,80 @@ class Match {
                         i = jokerInsert;
                     jokerInsert = -1;
                 }
-            } else if (tokens[i].getNumber() + 2 == tokens[i + 1].getNumber() && tempOffset >= 1) {                     // 1 joker is needed to fill
+            } else if (curr.getNumber() + 2 == tokens[i + 1].getNumber() && tempOffset >= 1) {                     // 1 joker is needed to fill
                 tempOffset--;
                 jokerInsert = i + 1;
                 partRes.add(joker);
-            } else if (tokens[i].getNumber() + 3 == tokens[i + 1].getNumber() && tempOffset == 2) {                     // 2 jokers are needed to fill
+            } else if (curr.getNumber() + 3 == tokens[i + 1].getNumber() && tempOffset == 2) {                     // 2 jokers are needed to fill
                 tempOffset--;
                 tempOffset--;
                 jokerInsert = i + 1;
                 partRes.add(joker);
                 partRes.add(joker);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Calculates all straights in the hand of the current player. A straight is an at least 3 token long sequence,
+     * where the tokens have the same color and consecutive numbers.
+     * <p>
+     * Depending on the amount of jokers there might be an offset, where the joker would fit in.
+     *
+     * @param offset amount of possible skips
+     * @return all straights in the hand of the current player
+     */
+    private List<Token[]> getAllStraightsInCurrPlayersHand(int offset) {
+        List<Token[]> res = new ArrayList<>();
+        Token[] tokens = players[currentPlayer].hand;
+
+        Arrays.sort(tokens);
+
+        Map<Integer, List<Token>> colorMap =
+                Arrays.stream(tokens).filter(t -> t.getNumber() >= 0).filter(t -> t.getColor() >= 0).collect(groupingBy(Token::getColor));
+
+        for (List<Token> list : colorMap.values())
+            res.addAll(getAllStraightsFromColorList(list, countJokersOfCurrentPlayer()));
+
+        return res;
+    }
+
+    private Set<Token[]> getAllStraightsFromColorList(List<Token> list, int jokerInt) {
+        Set<Token[]> res = new HashSet<>();
+        List<Token> temp = new ArrayList<>();
+
+        int tempJoker = jokerInt, jokerInsert = -1;
+
+        for (int i = 0; i < list.size(); i++) {
+            int distanceToNext = list.get((i + 1) % list.size()).getNumber() - list.get(i).getNumber();
+            temp.add(list.get(i));
+
+            if (distanceToNext < 0)
+                if ((distanceToNext += 13) == 1)
+                    temp.add(list.get(0));
+
+            if (distanceToNext <= 1) ;
+            else if (distanceToNext == 2 && tempJoker >= 1) {
+                tempJoker--;
+                jokerInsert = i + 1;
+                temp.add(joker);
+            } else if (distanceToNext == 3 && tempJoker == 2) {
+                tempJoker--;
+                tempJoker--;
+                jokerInsert = i + 1;
+                temp.add(joker);
+                temp.add(joker);
+            }
+
+            if (distanceToNext > 3 || i == list.size() - 1) {
+                if (temp.size() > 2) {
+                    res.addAll(new Sets().subsetsWithMinSize(temp, 3));
+                    i = jokerInsert == -1 ? i : jokerInsert;
+                    jokerInsert = -1;
+                    tempJoker = jokerInt;
+                }
+                temp.clear();
             }
         }
         return res;

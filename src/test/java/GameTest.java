@@ -66,7 +66,7 @@ public class GameTest {
         new Game(new Player[]{p, p2, p3});
         assertThat(p2.hand).isNotNull();
         assertThat(p2.hand).isNotEmpty();
-        assertThat(p2.hand[14]).usingComparator(Token::compareTo).isEqualTo(HEAVY);
+        assertThat(p2.hand[14]).usingComparator(Token::compareToStatic).isEqualTo(HEAVY);
 
         assertThat(p3.hand).isNotNull();
         assertThat(p3.hand).isNotEmpty();
@@ -349,6 +349,70 @@ public class GameTest {
         g.playerHandMap.put(p, tokens);
 
         assertThat(g.currPlayerWon(t)).isTrue();
+    }
+
+    @Test
+    @DisplayName("a player without winning hand is told not to have won.")
+    void test_18() {
+        Player p = new Player("Hakan");
+        Player p2 = new Player("Okan");
+        Game g = new Game(new Player[]{p, p2});
+
+        Token[] tokens = new Token[15];
+        Token t = new Token(1, 1);
+        tokens[0] = t;
+        tokens[1] = new Token(1, 2);
+        tokens[2] = new Token(1, 3);
+        tokens[3] = new Token(0, 4);
+        tokens[4] = new Token(1, 5);
+        tokens[5] = new Token(1, 6);
+        tokens[6] = new Token(1, 7);
+        tokens[7] = new Token(0, 9);
+        tokens[8] = new Token(1, 9);
+        tokens[9] = new Token(2, 9);
+        tokens[10] = new Token(3, 9);
+        tokens[11] = new Token(0, 10);
+        tokens[12] = new Token(1, 10);
+        tokens[13] = new Token(2, 10);
+        tokens[14] = new Token(3, 10);
+
+        p.hand = tokens;
+        g.playerHandMap.put(p, tokens);
+
+        assertThat(g.currPlayerWon(t)).isFalse();
+        assertThat(out.output).contains("If you throw the token {" + t + "} it isn't a win. Please throw another token.");
+    }
+
+    @Test
+    @DisplayName("a player with a winning hand is declared the winner. Flush warp around (12->13->1).")
+    void test_19() {
+        Player p = new Player("Hakan");
+        Player p2 = new Player("Okan");
+        Game g = new Game(new Player[]{p, p2});
+
+        Token[] tokens = new Token[15];
+        Token t = new Token(1, 1);
+        tokens[0] = t;
+        tokens[1] = new Token(1, 2);
+        tokens[2] = new Token(1, 3);
+        tokens[3] = new Token(0, 4);
+        tokens[4] = new Token(1, 5);
+        tokens[5] = new Token(1, 6);
+        tokens[6] = new Token(1, 7);
+        tokens[7] = new Token(0, 9);
+        tokens[8] = new Token(1, 9);
+        tokens[9] = new Token(2, 9);
+        tokens[10] = new Token(3, 9);
+        tokens[11] = new Token(0, 10);
+        tokens[12] = new Token(1, 10);
+        tokens[13] = new Token(2, 10);
+        tokens[14] = new Token(3, 10);
+
+        p.hand = tokens;
+        g.playerHandMap.put(p, tokens);
+
+        assertThat(g.currPlayerWon(t)).isFalse();
+        assertThat(out.output).contains("If you throw the token {" + t + "} it isn't a win. Please throw another token.");
     }
 
     void wait(int i) throws InterruptedException {

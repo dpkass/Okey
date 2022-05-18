@@ -29,7 +29,7 @@ public class Token implements Comparable {
         }
     }
 
-    public static int compareTo(Object o1, Object o2) {
+    public static int compareToStatic(Object o1, Object o2) {
         return ((Token) o1).compareTo((Token) o2);
     }
 

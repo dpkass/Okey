@@ -7,6 +7,25 @@ In this small project I want to be able emulate a game of Okey.
 It's a game from the Rummy family, which is very popular in Turkey (hence my naming of the test players :). Here's
 a [Wikipedia link](https://en.wikipedia.org/wiki/Okey), if you want to learn more about the game.
 
+## My Version
+
+My version of the game is slighty different (rules below). I don't choose a seperate Joker, but just use the "fake"
+ones, since the idea of cheating with a known deformation of the token doesn't really apply here.
+
+### Run
+
+To start the Emualtor, just run the Main Class.
+
+```shell
+gradle run
+```
+
+```shell
+gradle run --args="YOUR NAMES :)"
+```
+
+As for now, there is no GUI, but I will make sure to implement it soon.
+
 ## How to play (Game rules)
 
 Exercpt from [Wikipedia.com](https://en.wikipedia.org/wiki/Okey).
@@ -132,13 +151,8 @@ whose turn it is cannot win by taking the previous discard), then there is no sc
 Play continues until any player's score reaches zero or less. The two players with the highest scores at that time are
 the winners and the two with the lowest scores are the losers.
 
-## My Version
-
-My version of the game is slighty different. I don't choose a seperate Joker, but just use the "fake" ones, since the
-idea of cheating doesn't apply here.
-
-### Run
-
-To start the Emualtor, just run the Main Class. As for now, there is now GUI, but I will make sure to implement it soon.
+## Future thougts
 
 #### I'm thinking of trying to optimize (with AI tools) the way of playing the match as a player. Either in this or another repo. I will leave the link here, if I were to do so.
+
+Note: I actually programmed this in about 30 consecutive hours. Sleep is for the weak :)

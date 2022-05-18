@@ -29,6 +29,10 @@ public class Token implements Comparable {
         }
     }
 
+    public static int compareTo(Object o1, Object o2) {
+        return ((Token) o1).compareTo((Token) o2);
+    }
+
     int getColor() {
         return color;
     }
@@ -57,7 +61,8 @@ public class Token implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        int i = this.color - ((Token) o).getColor();
-        return i == 0 ? (this.number - ((Token) o).getNumber()) : i;
+        Token t = (Token) o;
+        int i = this.color - t.getColor();
+        return i == 0 ? (this.number - t.getNumber()) : i;
     }
 }

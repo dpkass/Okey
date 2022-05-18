@@ -8,7 +8,7 @@ class Game {
     Player[] players;
     int currentPlayer = 0;
     List<Token> tokens = new ArrayList<>();
-    //    Token joker;
+    Token joker = new Token(-1, -1);
     Token lastThrown = null;
     Player winner = null;
     BufferedReader reader;
@@ -44,7 +44,6 @@ class Game {
         play();
     }
 
-
     /**
      * This method initializes the game.
      * <p>
@@ -66,7 +65,6 @@ class Game {
         distributeTokens();
     }
 
-
     /**
      * This method distributes all the tokens. One player gets 15.
      * <p>
@@ -79,7 +77,7 @@ class Game {
                 temp[i] = tokens.get(i);
                 tokens.remove(i);
             }
-            temp[14] = new Token(Token.HEAVY, Token.HEAVY);
+            temp[14] = new Token(Token.HEAVY, -1);
             p.setHand(temp);
             playerHandMap.put(p, temp);
         }
@@ -169,7 +167,7 @@ class Game {
                 i += waitTime;
             }
         }
-        return s.equals("exit") ? null : s;
+        return "exit".equals(s) ? null : s;
     }
 
     /**
@@ -187,7 +185,17 @@ class Game {
         try {
             if (parts[0].equals("Joker")) thrown = new Token(-1, -1);
             else if (parts.length == 2) thrown = new Token(parts[0], Integer.parseInt(parts[1]));
-            else throw new IllegalArgumentException();
+            else if (parts.length == 3 && parts[0].equals("win")) {
+                thrown = new Token(parts[0], Integer.parseInt(parts[1]));
+                if (currPlayerWon(thrown)) {
+                    winner = players[currentPlayer];
+                    return 0;
+                } else {
+                    out.println("If you throw the token {" + thrown + "} it isn't a win. Please throw another token.");
+                    return thrownToken();
+                }
+            } else
+                throw new IllegalArgumentException();
         } catch (IllegalArgumentException e) {
             out.println("Invalid Argument. Please write the color of your token and then the number e.g. \"Gelb 5\". For Joker, write \"Joker\".");
             thrownToken();
@@ -213,6 +221,7 @@ class Game {
         Token[] hand = playerHandMap.get(players[currentPlayer]);
         int i = getIndex(hand, needle);
         swap(hand, i, 14);
+        hand[14] = new Token(Token.HEAVY, -1);
     }
 
     /**
@@ -255,9 +264,180 @@ class Game {
         return false;
     }
 
+    /**
+     * Displays the hand of the current player.
+     */
     void showHand() {
         Arrays.sort(players[currentPlayer].hand);
-        out.println(playerHandMap.entrySet().stream().filter(e -> e.getKey() == players[currentPlayer]).map(e -> e.getKey() + ":" + Arrays.toString(e.getValue()))
+        System.out.println(playerHandMap.entrySet().stream().filter(e -> e.getKey() == players[currentPlayer]).map(e -> e.getKey() + ":" + Arrays.toString(e.getValue()))
                 .collect(Collectors.joining("|")));
+    }
+
+    /**
+     * Tests if the current Player wins after removing a given token
+     *
+     * @param t token to remove
+     * @return true if win, false if not.
+     */
+    boolean currPlayerWon(Token t) {
+        if (isInCurrPlayersHand(t))
+            removeFromCurrPlayersHand(t);
+        int jokerCount = countJokersOfCurrentPlayer();
+
+        Set<Token[]> combinations = new HashSet<>();
+
+        combinations.addAll(getAllStraightsInCurrPlayersHand(jokerCount));
+        combinations.addAll(getAllFlushesInCurrPlayersHand());
+
+        Set<Set<Token[]>> powerSet = PowerSet.powerSetWithMaxSize(combinations, 4);
+        Set<Token[]> cleanPowerSet = reduce(powerSet);
+
+        return cleanPowerSet.size() - countNonWinningCombinations(cleanPowerSet, jokerCount) >= 1;
+    }
+
+    /**
+     * Counts how many of the remaining combinations are not winning
+     *
+     * @param set PowerSet of all combinations
+     */
+    private int countNonWinningCombinations(Set<Token[]> set, int jokers) {
+        int i = 0;
+        for (Token[] t : set) {
+            int availableJokers = jokers - countJokers(t);
+            if (t.length + availableJokers != 14)
+                i++;
+        }
+        return i;
+    }
+
+    /**
+     * Reduces List<Set<Token[]>> to Set<Token[]>.
+     *
+     * @param powerSet powerSet within which we reduce
+     */
+    private Set<Token[]> reduce(Set<Set<Token[]>> powerSet) {
+        Set<Token[]> res = new HashSet<>();
+        for (Set<Token[]> set : powerSet) {
+            int elements = 0, i = 0;
+            for (Token[] t : set) elements += t.length;
+
+            Token[] t = new Token[elements];
+            for (Token[] tokens : set) for (Token token : tokens) t[i++] = token;
+
+            res.add(t);
+        }
+        return res;
+    }
+
+    /**
+     * Counts the amount of jokers the current player hand.
+     *
+     * @return amount of jokers the current player hand.
+     */
+    private int countJokersOfCurrentPlayer() {
+        return countJokers(players[currentPlayer].hand);
+    }
+
+    /**
+     * Counts the amount of jokers in the given Array.
+     *
+     * @return amount of jokers the given Array.
+     */
+    private int countJokers(Token[] t) {
+        if (t.length < 3) return 0;
+
+        Arrays.sort(t);
+
+        if (t[1].getColor() == Token.JOKER) return 2;
+        if (t[0].getColor() == Token.JOKER) return 1;
+        return 0;
+    }
+
+    /**
+     * Calculates all straights in the hand of the current player. A straight is an at least 3 token long sequence,
+     * where the tokens have the same color and consecutive numbers.
+     * <p>
+     * Depending on the amount of jokers there might be an offset, where the joker would fit in.
+     *
+     * @param offset amount of possible skips
+     * @return all straights in the hand of the current player
+     */
+    List<Token[]> getAllStraightsInCurrPlayersHand(int offset) {
+        List<Token[]> res = new ArrayList<>();
+        Token[] tokens = players[currentPlayer].hand;
+        int tempOffset = offset, jokerInsert = -1;
+
+        Arrays.sort(players[currentPlayer].hand);
+
+        List<Token> partRes = new ArrayList<>();
+        for (int i = 0; i < tokens.length - 1; i++) {       // -1 since last one is HEAVY
+            partRes.add(tokens[i]);
+            // Colors are not the same or numbers are not consecutive (even with all jokers the player has)
+            if (tokens[i].getColor() != tokens[i + 1].getColor() || tokens[i].getNumber() + 1 + tempOffset < tokens[i + 1].getNumber()) {
+                if (partRes.size() < 3) partRes.clear();
+                else {
+                    res.addAll(partition(partRes));
+                    partRes.clear();
+                    tempOffset = offset;
+                    if (jokerInsert != -1)
+                        i = jokerInsert;
+                    jokerInsert = -1;
+                }
+            } else if (tokens[i].getNumber() + 2 == tokens[i + 1].getNumber() && tempOffset >= 1) {                     // 1 joker is needed to fill
+                tempOffset--;
+                jokerInsert = i + 1;
+                partRes.add(joker);
+            } else if (tokens[i].getNumber() + 3 == tokens[i + 1].getNumber() && tempOffset == 2) {                     // 2 jokers are needed to fill
+                tempOffset--;
+                tempOffset--;
+                jokerInsert = i + 1;
+                partRes.add(joker);
+                partRes.add(joker);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Calculates all flushes in the hand of the current player. A flush is a 3 to 4 token sized set, whose tokens all
+     * have the same number, big are different in color,
+     *
+     * @return all flushes in the hand of the current player
+     */
+    List<Token[]> getAllFlushesInCurrPlayersHand() {
+        List<Token[]> res = new ArrayList<>();
+        Token[] tokens = players[currentPlayer].hand;
+
+        Arrays.sort(tokens);
+
+        List<Token> partRes = new ArrayList<>();
+        for (Token t : tokens) {
+            partRes.add(t);
+            for (Token t2 : tokens) {
+                if (t == t2) continue;
+                if (t.getNumber() == t2.getNumber() && t.getColor() != t2.getColor()) partRes.add(t2);
+            }
+            if (partRes.size() >= 3) res.addAll(partition(partRes));
+            partRes.clear();
+        }
+        return res;
+    }
+
+    /**
+     * Creates partitions of a list with minimum size of 3. All partitions have consecutive elements.
+     *
+     * @param list Set to partition
+     * @return all partitions of a given list, that have consecutive elements
+     */
+    List<Token[]> partition(List<Token> list) {
+        List<Token[]> res = new ArrayList<>();
+
+        for (int i = 0; i < list.size() - 2; i++)                           // i is start of Token[]
+            for (int j = 0; list.size() - j > i + 2; j++) {                 // j makes range of Token[] smaller (min 3)
+                Token[] t = new Token[list.size() - i - j];
+                for (int k = i; k < list.size() - j; k++) t[k - i] = list.get(k);
+                res.add(t);
+            }
+        return res;
     }
 }

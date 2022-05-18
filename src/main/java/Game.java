@@ -15,7 +15,7 @@ class Game {
 
     private Player[] players;
     private Map<Player, Integer> score = new HashMap<>();
-    private BufferedReader reader;
+    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private Output out;
     private Match currentMatch;
 
@@ -36,15 +36,11 @@ class Game {
         this.reader = new BufferedReader(reader);
         this.out = out;
         if (init() < 0) newPlayers();
-        currentMatch = new Match(players, out, this);
+        currentMatch = new Match(this.players, out, this);
     }
 
     public Game() {
-        newPlayers();
-        this.reader = new BufferedReader(reader);
-        this.out = out;
-        if (init() < 0) newPlayers();
-        currentMatch = new Match(players, out, this);
+        this(null);
     }
 
     public void start() {
@@ -60,6 +56,8 @@ class Game {
     }
 
     private int init() {
+        if (players == null) return -1;
+
         if (players.length < 2 || players.length > 4) {
             out.println("There is a minimum of two players and a maximum of four in this match.");
             return -1;
@@ -103,7 +101,7 @@ class Game {
 
         String s = waitForInput(100);
 
-        setPlayers((Player[]) Arrays.stream(s.split(" ")).map(p -> new Player(p)).toArray(Player[]::new));
+        setPlayers(Arrays.stream(s.split(" ")).map(p -> new Player(p)).toArray(Player[]::new));
         init();
     }
 

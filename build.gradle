@@ -6,10 +6,6 @@ plugins {
 group 'org.example'
 version '1.0-SNAPSHOT'
 
-ext {
-    javaMainClass = "main.java.Main"
-}
-
 repositories {
     mavenCentral()
 }
@@ -26,5 +22,5 @@ test {
 }
 
 application {
-    mainClassName = javaMainClass
+    mainClassName = 'Main'
 }

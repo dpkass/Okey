@@ -139,6 +139,6 @@ idea of cheating doesn't apply here.
 
 ### Run
 
-To start the Emualtor, just run the
+To start the Emualtor, just run the Main Class. As for now, there is now GUI, but I will make sure to implement it soon.
 
 #### I'm thinking of trying to optimize (with AI tools) the way of playing the match as a player. Either in this or another repo. I will leave the link here, if I were to do so.

@@ -144,6 +144,7 @@ class Match {
                 tokens.remove(0);
             }
             case "thrown" -> players[currentPlayer].getNewToken(lastThrown);
+            case "exit" -> {return -1;}
             default -> {
                 out.println("Please write \"new\" for a new Token or \"thrown\" for the thrown Token.");
                 return giveToken();
@@ -163,7 +164,9 @@ class Match {
         Token thrown = null;
 
         try {
-            if ((thrown = throwAction(s)) == null) return 0;
+            if ((thrown = throwAction(s)) == null)
+                if (winner != null) return 0;
+                else return -1;
         } catch (IllegalArgumentException e) {
             out.println("Invalid Argument. Please write the color of your token and then the number e.g. \"Gelb 5\". For Joker, write \"Joker\".");
             thrownToken();
@@ -182,7 +185,8 @@ class Match {
 
     private Token throwAction(String s) {
         String[] parts = s.split(" ");
-        if (parts[0].equals("Joker")) return new Token(-1, -1);
+        if (parts[0].equals("exit")) return null;
+        else if (parts[0].equals("Joker")) return new Token(-1, -1);
         else if (parts.length == 2) return new Token(parts[0], Integer.parseInt(parts[1]));
         else if (parts.length == 3 && parts[0].equals("win")) {
             Token thrown = new Token(parts[1], Integer.parseInt(parts[2]));

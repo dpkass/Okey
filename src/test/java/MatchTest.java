@@ -1,5 +1,4 @@
 import Output.FakeOutput;
-import jdk.jfr.Enabled;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import java.io.StringReader;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 
 @DisplayName("This test tests, if ")
@@ -20,7 +18,7 @@ public class MatchTest {
     FakeOutput out = new FakeOutput();
 
     @Test
-    @DisplayName("two players and then a game can be instantiated.")
+    @DisplayName("two players and then a match can be instantiated.")
     void test_2() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
@@ -32,15 +30,7 @@ public class MatchTest {
     }
 
     @Test
-    @DisplayName("an Exception is thrown when a game is instantiated with one player.")
-    void test_3() {
-        Player p = new Player("Hakan");
-
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new Match(new Player[]{p}, null));
-    }
-
-    @Test
-    @DisplayName("when we have an instance of a game the the players have different hands of tokens.")
+    @DisplayName("when we have an instance of a match the the players have different hands of tokens.")
     void test_6() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
@@ -50,7 +40,7 @@ public class MatchTest {
     }
 
     @Test
-    @DisplayName("when we have an instance of a game the first player has a hand of tokens, with 15 Tokens (no null).")
+    @DisplayName("when we have an instance of a match the first player has a hand of tokens, with 15 Tokens (no null).")
     void test_4() {
         Player p = new Player("Hakan");
         new Match(new Player[]{p, p}, null);
@@ -60,7 +50,7 @@ public class MatchTest {
     }
 
     @Test
-    @DisplayName("when we have an instance of a game the all other players, but the first, have a hand of tokens, with 14 Tokens and one heavy.")
+    @DisplayName("when we have an instance of a match the all other players, but the first, have a hand of tokens, with 14 Tokens and one heavy.")
     void test_5() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
@@ -77,24 +67,24 @@ public class MatchTest {
     }
 
     @Test
-    @DisplayName("the game starts, greets and asks the player to throw a token.")
+    @DisplayName("the match starts, greets and asks the player to throw a token.")
     void test_7() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, new StringReader("exit"), out);
+        Game m = new Game(new Player[]{p, p2}, new StringReader("exit"), out);
 
-        g.start();
+        m.start();
 
         assertThat(out.output).contains("Match starts!!");
         assertThat(out.output).contains("Please throw the first Token, " + p + ".");
     }
 
     @Test
-    @DisplayName("the game answers to a thrown token, which was in ones hand, correctly (first  player).")
+    @DisplayName("the match answers to a thrown token, which was in ones hand, correctly (first  player).")
     void test_8() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, new FileReader("TestInputs/test_8"), out);
+        Game m = new Game(new Player[]{p, p2}, new FileReader("TestInputs/test_8"), out);
 
         Token t;
 
@@ -102,17 +92,17 @@ public class MatchTest {
         pw.println(String.format("%s\nexit", t = p.hand[0]));
         pw.close();
 
-        g.start();
+        m.start();
 
         assertThat(out.output).contains("The thrown Token is {" + t + "}.");
     }
 
     @Test
-    @DisplayName("the game asks which Token the player wants and answers to a thrown token, which was in ones hand, correctly (second player).")
+    @DisplayName("the match asks which Token the player wants and answers to a thrown token, which was in ones hand, correctly (second player).")
     void test_9() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, new FileReader("TestInputs/test_9"), out);
+        Game m = new Game(new Player[]{p, p2}, new FileReader("TestInputs/test_9"), out);
 
         Token t, t2;
 
@@ -120,24 +110,24 @@ public class MatchTest {
         pw.println(String.format("%s\nnew\n%s\nexit", t = p.hand[0], t2 = p2.hand[0]));
         pw.close();
 
-        g.start();
+        m.start();
 
         assertThat(out.output).contains("Do you want to take the thrown Token {" + t + "} or get a new one?");
         assertThat(out.output).contains("The thrown Token is {" + t2 + "}.");
     }
 
     @Test
-    @DisplayName("the game announces the right players name.")
+    @DisplayName("the match announces the right players name.")
     void test_10() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, new FileReader("TestInputs/test_10"), out);
+        Game m = new Game(new Player[]{p, p2}, new FileReader("TestInputs/test_10"), out);
 
         PrintWriter pw = new PrintWriter("TestInputs/test_10");
         pw.println(String.format("%s\nnew\n%s\nexit", p.hand[0], p2.hand[0]));
         pw.close();
 
-        g.start();
+        m.start();
 
         assertThat(out.output.get(3)).isEqualTo("It's Okans turn.");
         assertThat(out.output.get(6)).isEqualTo("It's Hakans turn.");
@@ -150,13 +140,13 @@ public class MatchTest {
      */
     @Disabled
     @Test
-    @DisplayName("the game waits for input.")
+    @DisplayName("the match waits for input.")
     void test_11() throws IOException, InterruptedException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2}, new FileReader("TestInputs/test_11"), out);
+        Game m = new Game(new Player[]{p, p2}, new FileReader("TestInputs/test_11"), out);
 
-        WaitingTester wt = new WaitingTester("Test 11", g);
+        WaitingTester wt = new WaitingTester("Test 11", m);
         wt.start();
 
         wait(3);
@@ -181,7 +171,7 @@ public class MatchTest {
     void test_13() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Match g = new Match(new Player[]{p, p2}, null);
+        Match m = new Match(new Player[]{p, p2}, null);
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -202,11 +192,11 @@ public class MatchTest {
         tokens[14] = new Token(3, 6);
 
         p.hand = tokens;
-        g.playerHandMap.put(p, tokens);
+        m.playerHandMap.put(p, tokens);
 
-        g.currPlayerWon(t);
+        m.currPlayerWon(t);
 
-        assertThat(g.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon(t)).isTrue();
     }
 
     @Test
@@ -214,7 +204,7 @@ public class MatchTest {
     void test_14() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Match g = new Match(new Player[]{p, p2}, null);
+        Match m = new Match(new Player[]{p, p2}, null);
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -235,9 +225,9 @@ public class MatchTest {
         tokens[14] = new Token(3, 4);
 
         p.hand = tokens;
-        g.playerHandMap.put(p, tokens);
+        m.playerHandMap.put(p, tokens);
 
-        assertThat(g.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon(t)).isTrue();
     }
 
 
@@ -246,7 +236,7 @@ public class MatchTest {
     void test_15() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Match g = new Match(new Player[]{p, p2}, null);
+        Match m = new Match(new Player[]{p, p2}, null);
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -267,9 +257,9 @@ public class MatchTest {
         tokens[14] = new Token(3, 10);
 
         p.hand = tokens;
-        g.playerHandMap.put(p, tokens);
+        m.playerHandMap.put(p, tokens);
 
-        assertThat(g.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon(t)).isTrue();
     }
 
     @Test
@@ -277,7 +267,7 @@ public class MatchTest {
     void test_16() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Match g = new Match(new Player[]{p, p2}, null);
+        Match m = new Match(new Player[]{p, p2}, null);
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -298,9 +288,9 @@ public class MatchTest {
         tokens[14] = new Token(3, 10);
 
         p.hand = tokens;
-        g.playerHandMap.put(p, tokens);
+        m.playerHandMap.put(p, tokens);
 
-        assertThat(g.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon(t)).isTrue();
     }
 
     @Test
@@ -308,7 +298,7 @@ public class MatchTest {
     void test_17() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Match g = new Match(new Player[]{p, p2}, null);
+        Match m = new Match(new Player[]{p, p2}, null);
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -329,9 +319,9 @@ public class MatchTest {
         tokens[14] = new Token(1, 9);
 
         p.hand = tokens;
-        g.playerHandMap.put(p, tokens);
+        m.playerHandMap.put(p, tokens);
 
-        assertThat(g.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon(t)).isTrue();
     }
 
     @Test
@@ -339,7 +329,7 @@ public class MatchTest {
     void test_18() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Match g = new Match(new Player[]{p, p2}, null);
+        Match m = new Match(new Player[]{p, p2}, null);
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -360,9 +350,9 @@ public class MatchTest {
         tokens[14] = new Token(3, 10);
 
         p.hand = tokens;
-        g.playerHandMap.put(p, tokens);
+        m.playerHandMap.put(p, tokens);
 
-        assertThat(g.currPlayerWon(t)).isFalse();
+        assertThat(m.currPlayerWon(t)).isFalse();
         assertThat(out.output).contains("If you throw the token {" + t + "} it isn't a win. Please throw another token.");
     }
 
@@ -371,7 +361,7 @@ public class MatchTest {
     void test_19() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
-        Match g = new Match(new Player[]{p, p2}, null);
+        Match m = new Match(new Player[]{p, p2}, null);
 
         Token[] tokens = new Token[15];
         Token t = new Token(1, 1);
@@ -392,9 +382,9 @@ public class MatchTest {
         tokens[14] = new Token(3, 10);
 
         p.hand = tokens;
-        g.playerHandMap.put(p, tokens);
+        m.playerHandMap.put(p, tokens);
 
-        assertThat(g.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon(t)).isTrue();
     }
 
     void wait(int i) throws InterruptedException {

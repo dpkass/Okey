@@ -20,11 +20,15 @@ public class Game {
     private Match currentMatch;
 
     public Game(Player[] players) {
-        this(players, new BufferedReader(new InputStreamReader(System.in)));
+        this(players, new InputStreamReader(System.in));
     }
 
     public Game(Player[] players, Reader reader) {
-        this(players, new BufferedReader(new InputStreamReader(System.in)), new KonsoleOutput());
+        this(players, reader, new KonsoleOutput());
+    }
+
+    public Game(Player[] players, Output out) {
+        this(players, new InputStreamReader(System.in), out);
     }
 
     public Game(Player[] players, Reader reader, Output out) {
@@ -44,6 +48,24 @@ public class Game {
         }
     }
 
+    private int init() {
+        if (players.length < 2 || players.length > 4) {
+            out.println("There is a minimum of two players and a maximum of four in this match.");
+            return -1;
+        }
+
+        for (Player p : players)
+            for (Player p2 : players)
+                if (p != p2 &&
+                        p.toString().equals(p2.toString())) {
+                    out.println("Players must not have the same name.");
+                    return -1;
+                }
+
+        for (Player p : players) score.put(p, 10);
+        return 0;
+    }
+
     /**
      * Waits for Input.
      *
@@ -60,32 +82,18 @@ public class Game {
                     TimeUnit.MILLISECONDS.wait(waitTime);
             } catch (Exception e) {}
         }
-        return "exit".equals(s) ? null : s;
+        return s;
     }
 
     private void newPlayers() {
         Scanner in = new Scanner(System.in);
 
-        out.println("Players must not have the same name.");
         out.println("Please enter the new player names.");
 
         String s = waitForInput(100);
 
-        setPlayers((Player[]) Arrays.stream(s.split(" ")).map(p -> new Player(p)).toArray());
+        setPlayers((Player[]) Arrays.stream(s.split(" ")).map(p -> new Player(p)).toArray(Player[]::new));
         init();
-    }
-
-    private int init() {
-        if (players.length < 2 || players.length > 4) {
-            new KonsoleOutput().println("There is a minimum of two players and a maximum of four in this match.");
-            newPlayers();
-        }
-
-        for (Player p : players)
-            for (Player p2 : players) if (p != p2 && p.equals(p2)) return -1;
-
-        for (Player p : players) score.put(p, 10);
-        return 0;
     }
 
     private void endOfMatch(Player winner) {
@@ -153,7 +161,7 @@ public class Game {
     }
 
     public void setPlayers(Player[] players) {
-        this.players = players;
+        this.players = (Player[]) players;
     }
 
     public Match getCurrentMatch() {

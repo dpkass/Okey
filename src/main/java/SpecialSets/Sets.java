@@ -36,8 +36,8 @@ public class Sets<T> {
     /**
      * Creates subsets of a list with minimum size of 3. All partitions have consecutive elements.
      *
-     * @param set Set to create subsets of
-     * @param min minimum size of subsets
+     * @param list Set to create subsets of
+     * @param min  minimum size of subsets
      * @return all subsets of a given set, that have consecutive elements
      */
     public Set<T[]> subsetsWithMinSize(List<T> list, int min) {

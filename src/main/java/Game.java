@@ -56,7 +56,7 @@ class Game {
      * <p>
      * Jokers have color -1 and number -1. For simplification I took out the pulling joker part for now.
      */
-    void init() {
+    private void init() {
         createTokens();
 
 //        joker = tokens.get((int) (Math.random() * tokens.size()));
@@ -74,7 +74,7 @@ class Game {
      * <p>
      * The game saves the list of Tokens each person gets, in case someone tries to cheat.
      */
-    void distributeTokens() {
+    private void distributeTokens() {
         for (Player p : players) {
             Token[] temp = new Token[15];
             for (int i = 0; i < 14; i++) {
@@ -92,7 +92,7 @@ class Game {
     /**
      * This method creates all the tokens.
      */
-    void createTokens() {
+    private void createTokens() {
         for (int i = 0; i < 2; i++)                     // duplicate tokens
             for (int j = 1; j <= 13; j++)               // 13 numbers
                 for (int k = 0; k < 4; k++)             // 4 colors
@@ -104,29 +104,36 @@ class Game {
      *
      * @return 0 means the game finished with a winner. -1 means a player is not responding or exited the game.
      */
-    int playFirst() throws IOException, InterruptedException {
+    private int playFirst() throws IOException, InterruptedException {
         out.println("Game starts!!");
-//        out.println("The joker is " + joker + ".");
         showHand();
         out.println("Please throw the first Token, " + players[currentPlayer] + ".");
         if (thrownToken() < 0) return -1;
-        currentPlayer = (currentPlayer + 1) % players.length;
+        nextPlayer();
         return 0;
+    }
+
+    /**
+     * Gives the next Player the turn.
+     */
+    private void nextPlayer() {
+        currentPlayer = (currentPlayer + 1) % players.length;
+        out.println("It's " + players[currentPlayer] + "s turn.");
+        showHand();
+        out.println("Do you want to take the thrown Token {" + lastThrown + "} or get a new one?");
     }
 
     /**
      * While there is no winner and no stopping condition the game is played.
      */
-    void play() throws IOException, InterruptedException {
+    private void play() throws IOException, InterruptedException {
         while (winner == null) {
-            out.println("It's " + players[currentPlayer] + "s turn.");
-            showHand();
-            out.println("Do you want to take the thrown Token {" + lastThrown + "} or get a new one?");
             if (giveToken() < 0) return;
             showHand();
             if (thrownToken() < 0) return;
-            currentPlayer = (currentPlayer + 1) % players.length;
+            nextPlayer();
         }
+        out.println("The winner is " + winner + ". Congratulation!!");
     }
 
     /**
@@ -135,9 +142,8 @@ class Game {
      *
      * @return 0 means player got his Token. -1 means player wants to exit or player didn't respond.
      */
-    int giveToken() throws IOException, InterruptedException {
-        int waitTime = 100;
-        String s = waitForInput(waitTime);
+    private int giveToken() throws IOException, InterruptedException {
+        String s = waitForInput(100);
         if (s == null) return -1;
 
         switch (s) {
@@ -155,51 +161,17 @@ class Game {
     }
 
     /**
-     * Waits for Input.
-     *
-     * @param waitTime periodical wait time between each check
-     * @return String which was read from Input
-     * @field maxWaitTime determines maximum amount of seconds to wait
-     */
-    private String waitForInput(int waitTime) throws IOException, InterruptedException {
-        String s;
-        int i = 0;
-        synchronized (TimeUnit.MILLISECONDS) {
-            while ((s = reader.readLine()) == null) {
-                if (i > maxWaitTime * 1000) break;
-                TimeUnit.MILLISECONDS.wait(waitTime);
-                i += waitTime;
-            }
-        }
-        return "exit".equals(s) ? null : s;
-    }
-
-    /**
      * Tests if a player threw a Token that he has in his hand. If he did, his hand will be adjusted.
      *
      * @return 0 means the game finished with a winner. -1 means player wants to exitor player didn't respond.
      */
-    int thrownToken() throws IOException, InterruptedException {
-        int waitTime = 100;
-        String s = waitForInput(waitTime);
+    private int thrownToken() {
+        String s = waitForInput(100);
         if (s == null) return -1;
         Token thrown = null;
 
-        String[] parts = s.split(" ");
         try {
-            if (parts[0].equals("Joker")) thrown = new Token(-1, -1);
-            else if (parts.length == 2) thrown = new Token(parts[0], Integer.parseInt(parts[1]));
-            else if (parts.length == 3 && parts[0].equals("win")) {
-                thrown = new Token(parts[0], Integer.parseInt(parts[1]));
-                if (currPlayerWon(thrown)) {
-                    winner = players[currentPlayer];
-                    return 0;
-                } else {
-                    out.println("If you throw the token {" + thrown + "} it isn't a win. Please throw another token.");
-                    return thrownToken();
-                }
-            } else
-                throw new IllegalArgumentException();
+            if ((thrown = throwAction(s)) == null) return 0;
         } catch (IllegalArgumentException e) {
             out.println("Invalid Argument. Please write the color of your token and then the number e.g. \"Gelb 5\". For Joker, write \"Joker\".");
             thrownToken();
@@ -216,12 +188,48 @@ class Game {
         return 0;
     }
 
+    private Token throwAction(String s) {
+        String[] parts = s.split(" ");
+        if (parts[0].equals("Joker")) return new Token(-1, -1);
+        else if (parts.length == 2) return new Token(parts[0], Integer.parseInt(parts[1]));
+        else if (parts.length == 3 && parts[0].equals("win")) {
+            Token thrown = new Token(parts[1], Integer.parseInt(parts[2]));
+            if (currPlayerWon(thrown)) {
+                winner = players[currentPlayer];
+                return null;
+            } else {
+                out.println("If you throw the token {" + thrown + "} it isn't a win. Please throw another token.");
+                players[currentPlayer].hand[14] = thrown;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Waits for Input.
+     *
+     * @param waitTime periodical wait time between each check
+     * @return String which was read from Input
+     * @field maxWaitTime determines maximum amount of seconds to wait
+     */
+    private String waitForInput(int waitTime) {
+        String s = "exit";
+        int i = 0;
+        synchronized (TimeUnit.MILLISECONDS) {
+            try {
+                while ((s = reader.readLine()) == null && (i += waitTime) < maxWaitTime * 1000)
+                    TimeUnit.MILLISECONDS.wait(waitTime);
+            } catch (Exception e) {}
+        }
+        return "exit".equals(s) ? null : s;
+    }
+
     /**
      * Removes a given Token from the current players Hand (by moving it to the last spot).
      *
      * @param needle Token to remove from current Players Hand
      */
-    void removeFromCurrPlayersHand(Token needle) {
+    private void removeFromCurrPlayersHand(Token needle) {
         Token[] hand = playerHandMap.get(players[currentPlayer]);
         int i = getIndex(hand, needle);
         swap(hand, i, 14);
@@ -248,7 +256,7 @@ class Game {
      * @param i First index to swap
      * @param j Second index to swap
      */
-    void swap(Token[] a, int i, int j) {
+    private void swap(Token[] a, int i, int j) {
         Token t = a[i];
         a[i] = a[j];
         a[j] = t;
@@ -260,7 +268,7 @@ class Game {
      * @param needle Token to look for in current players Hand
      * @return thrown in current players hand?
      */
-    boolean isInCurrPlayersHand(Token needle) {
+    private boolean isInCurrPlayersHand(Token needle) {
         Token[] temp = playerHandMap.get(players[currentPlayer]);
         for (Token token : temp)
             if (token.equals(needle))
@@ -271,10 +279,11 @@ class Game {
     /**
      * Displays the hand of the current player.
      */
-    void showHand() {
+    Map showHand() {
         Arrays.sort(players[currentPlayer].hand);
         System.out.println(playerHandMap.entrySet().stream().filter(e -> e.getKey() == players[currentPlayer]).map(e -> e.getKey() + ":" + Arrays.toString(e.getValue()))
                 .collect(Collectors.joining("|")));
+        return playerHandMap;
     }
 
     /**
@@ -366,7 +375,7 @@ class Game {
      * @param offset amount of possible skips
      * @return all straights in the hand of the current player
      */
-    List<Token[]> getAllStraightsInCurrPlayersHand(int offset) {
+    private List<Token[]> getAllStraightsInCurrPlayersHand(int offset) {
         List<Token[]> res = new ArrayList<>();
         Token[] tokens = players[currentPlayer].hand;
         int tempOffset = offset, jokerInsert = -1;
@@ -377,8 +386,8 @@ class Game {
         for (int i = 0; i < tokens.length - 1; i++) {       // -1 since last one is HEAVY
             partRes.add(tokens[i]);
             if (tokens[i].getNumber() == 13 && tokens[0].getNumber() == 1) partRes.add(tokens[0]);
-            // Colors are not the same or numbers are not consecutive (even with all jokers the player has)
-            if (tokens[i].getColor() != tokens[i + 1].getColor() || tokens[i].getNumber() + 1 + tempOffset < tokens[i + 1].getNumber()) {
+
+            if (tokens[i].getColor() != tokens[i + 1].getColor() || tokens[i].getNumber() + 1 + tempOffset < tokens[i + 1].getNumber()) { // Colors are not the same or numbers are not consecutive (even with all jokers the player has)
                 if (partRes.size() < 3) partRes.clear();
                 else {
                     res.addAll(new Sets<Token>().subsetsWithMinSize(partRes.stream().toList(), 3));
@@ -409,7 +418,7 @@ class Game {
      *
      * @return all flushes in the hand of the current player
      */
-    List<Token[]> getAllFlushesInCurrPlayersHand() {
+    private List<Token[]> getAllFlushesInCurrPlayersHand() {
         List<Token[]> res = new ArrayList<>();
         List<Token> used = new ArrayList<>();
         Token[] tokens = players[currentPlayer].hand;

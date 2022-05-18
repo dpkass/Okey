@@ -1,9 +1,14 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'org.example'
 version '1.0-SNAPSHOT'
+
+ext {
+    javaMainClass = "java.main.Main"
+}
 
 repositories {
     mavenCentral()
@@ -18,4 +23,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+application {
+    mainClassName = javaMainClass
 }

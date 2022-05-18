@@ -1,9 +1,9 @@
+import Output.FakeOutput;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -171,29 +171,6 @@ public class GameTest {
         wait(3);
 
         assertThat(out.output).hasSize(6);
-    }
-
-    @Test
-    @DisplayName("the method partition works.")
-    void test_12() {
-        Player p = new Player("Hakan");
-        Player p2 = new Player("Okan");
-        Game g = new Game(new Player[]{p, p2});
-
-        Token t = new Token(1, 1);
-        Token t2 = new Token(1, 2);
-        Token t3 = new Token(1, 3);
-        Token t4 = new Token(1, 4);
-        Token t5 = new Token(1, 5);
-
-        List<Token[]> list = g.partition(List.of(t, t2, t3, t4, t5));
-
-        assertThat(list).contains(new Token[]{t, t2, t3, t4, t5});
-        assertThat(list).contains(new Token[]{t, t2, t3, t4});
-        assertThat(list).contains(new Token[]{t, t2, t3});
-        assertThat(list).contains(new Token[]{t2, t3, t4, t5});
-        assertThat(list).contains(new Token[]{t2, t3, t4});
-        assertThat(list).contains(new Token[]{t3, t4, t5});
     }
 
     @Test
@@ -395,10 +372,10 @@ public class GameTest {
         tokens[0] = t;
         tokens[1] = new Token(1, 2);
         tokens[2] = new Token(1, 3);
-        tokens[3] = new Token(0, 4);
-        tokens[4] = new Token(1, 5);
-        tokens[5] = new Token(1, 6);
-        tokens[6] = new Token(1, 7);
+        tokens[3] = new Token(1, 4);
+        tokens[4] = new Token(1, 12);
+        tokens[5] = new Token(1, 13);
+        tokens[6] = new Token(1, 1);
         tokens[7] = new Token(0, 9);
         tokens[8] = new Token(1, 9);
         tokens[9] = new Token(2, 9);
@@ -411,8 +388,7 @@ public class GameTest {
         p.hand = tokens;
         g.playerHandMap.put(p, tokens);
 
-        assertThat(g.currPlayerWon(t)).isFalse();
-        assertThat(out.output).contains("If you throw the token {" + t + "} it isn't a win. Please throw another token.");
+        assertThat(g.currPlayerWon(t)).isTrue();
     }
 
     void wait(int i) throws InterruptedException {

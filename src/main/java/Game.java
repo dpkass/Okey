@@ -1,3 +1,7 @@
+import Output.Output;
+import SpecialSets.Sets;
+import Output.KonsoleOutput;
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -289,7 +293,7 @@ class Game {
         combinations.addAll(getAllStraightsInCurrPlayersHand(jokerCount));
         combinations.addAll(getAllFlushesInCurrPlayersHand());
 
-        Set<Set<Token[]>> powerSet = PowerSet.powerSetWithMaxSize(combinations, 4);
+        Set<Set<Token[]>> powerSet = new Sets<Token[]>().powerSetWithMaxSize(combinations, 4);
         Set<Token[]> cleanPowerSet = reduce(powerSet);
 
         return cleanPowerSet.size() - countNonWinningCombinations(cleanPowerSet, jokerCount) >= 1;
@@ -369,14 +373,15 @@ class Game {
 
         Arrays.sort(players[currentPlayer].hand);
 
-        List<Token> partRes = new ArrayList<>();
+        Set<Token> partRes = new HashSet<>();
         for (int i = 0; i < tokens.length - 1; i++) {       // -1 since last one is HEAVY
             partRes.add(tokens[i]);
+            if (tokens[i].getNumber() == 13 && tokens[0].getNumber() == 1) partRes.add(tokens[0]);
             // Colors are not the same or numbers are not consecutive (even with all jokers the player has)
             if (tokens[i].getColor() != tokens[i + 1].getColor() || tokens[i].getNumber() + 1 + tempOffset < tokens[i + 1].getNumber()) {
                 if (partRes.size() < 3) partRes.clear();
                 else {
-                    res.addAll(partition(partRes));
+                    res.addAll(new Sets<Token>().subsetsWithMinSize(partRes.stream().toList(), 3));
                     partRes.clear();
                     tempOffset = offset;
                     if (jokerInsert != -1)
@@ -406,38 +411,23 @@ class Game {
      */
     List<Token[]> getAllFlushesInCurrPlayersHand() {
         List<Token[]> res = new ArrayList<>();
+        List<Token> used = new ArrayList<>();
         Token[] tokens = players[currentPlayer].hand;
 
         Arrays.sort(tokens);
 
-        List<Token> partRes = new ArrayList<>();
+        Set<Token> partRes = new HashSet<>();
         for (Token t : tokens) {
             partRes.add(t);
             for (Token t2 : tokens) {
                 if (t == t2) continue;
-                if (t.getNumber() == t2.getNumber() && t.getColor() != t2.getColor()) partRes.add(t2);
+                if (t.getNumber() == t2.getNumber() && t.getColor() != t2.getColor() && !used.contains(t2))
+                    partRes.add(t2);
             }
-            if (partRes.size() >= 3) res.addAll(partition(partRes));
+            used.add(t);
+            if (partRes.size() >= 3) res.addAll(new Sets<Token>().subsetsWithMinSize(partRes.stream().toList(), 3));
             partRes.clear();
         }
-        return res;
-    }
-
-    /**
-     * Creates partitions of a list with minimum size of 3. All partitions have consecutive elements.
-     *
-     * @param list Set to partition
-     * @return all partitions of a given list, that have consecutive elements
-     */
-    List<Token[]> partition(List<Token> list) {
-        List<Token[]> res = new ArrayList<>();
-
-        for (int i = 0; i < list.size() - 2; i++)                           // i is start of Token[]
-            for (int j = 0; list.size() - j > i + 2; j++) {                 // j makes range of Token[] smaller (min 3)
-                Token[] t = new Token[list.size() - i - j];
-                for (int k = i; k < list.size() - j; k++) t[k - i] = list.get(k);
-                res.add(t);
-            }
         return res;
     }
 }

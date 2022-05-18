@@ -1,4 +1,6 @@
-class KonsoleOutput implements Output {
+package Output;
+
+public class KonsoleOutput implements Output {
 
     @Override
     public void println(String string) {

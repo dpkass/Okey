@@ -1,8 +1,8 @@
 è[Players must not have the same name., Please enter the player names., There is a minimum of two players and a maximum of four in this match.]
-äHakan:[Joker, Gelb 1, Gelb 4, Gelb 6, Gelb 10, Gelb 12, Gelb 13, Rot 11, Rot 12, Rot 13, Blau 6, Blau 12, Blau 13, Schwarz 5, Schwarz 13]
-âOkan:[Gelb 3, Gelb 5, Gelb 8, Gelb 9, Gelb 11, Rot 1, Rot 3, Rot 9, Blau 1, Blau 9, Schwarz 2, Schwarz 8, Schwarz 10, Schwarz 11, Heavy]
-äOkan:[Gelb 3, Gelb 4, Gelb 5, Gelb 8, Gelb 9, Gelb 11, Rot 1, Rot 3, Rot 9, Blau 1, Blau 9, Schwarz 2, Schwarz 8, Schwarz 10, Schwarz 11]
-àHakan:[Joker, Gelb 1, Gelb 4, Gelb 6, Gelb 10, Gelb 12, Gelb 13, Rot 11, Rot 12, Rot 13, Blau 6, Blau 13, Schwarz 5, Schwarz 13, Heavy]
+êHakan:[Gelb 9, Gelb 9, Gelb 10, Gelb 11, Gelb 11, Gelb 13, Rot 1, Rot 2, Rot 7, Blau 4, Blau 11, Schwarz 5, Schwarz 11, Schwarz 12, Schwarz 12]
+åOkan:[Gelb 1, Gelb 7, Gelb 8, Rot 1, Rot 3, Rot 5, Rot 12, Blau 9, Blau 13, Schwarz 4, Schwarz 6, Schwarz 9, Schwarz 13, Schwarz 13, Heavy]
+çOkan:[Gelb 1, Gelb 7, Gelb 8, Rot 1, Rot 3, Rot 5, Rot 12, Blau 5, Blau 9, Blau 13, Schwarz 4, Schwarz 6, Schwarz 9, Schwarz 13, Schwarz 13]
+ãHakan:[Gelb 9, Gelb 9, Gelb 10, Gelb 11, Gelb 11, Gelb 13, Rot 1, Rot 2, Rot 7, Blau 4, Blau 11, Schwarz 5, Schwarz 12, Schwarz 12, Heavy]
  There is 1 winning combination.
 àThis combination is [[Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 7, Rot 8, Rot 9, Blau 1, Blau 2, Blau 3, Schwarz 4, Schwarz 5, Schwarz 6]]
 []
@@ -18,20 +18,20 @@
 lThis combination is [[Rot 2, Rot 3, Rot 4, Rot 5, Rot 6, Rot 7, Rot 8, Rot 9, Rot 9, Rot 9, Rot 9, Rot 10]]
  There is 1 winning combination.
 ãThis combination is [[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9, Schwarz 10]]
-çHakan:[Gelb 1, Gelb 6, Gelb 7, Gelb 7, Gelb 13, Rot 1, Rot 11, Rot 12, Blau 4, Blau 5, Blau 11, Schwarz 1, Schwarz 9, Schwarz 9, Schwarz 11]
+ÅHakan:[Gelb 1, Gelb 3, Gelb 4, Gelb 5, Rot 3, Rot 5, Rot 6, Rot 8, Rot 11, Rot 12, Blau 1, Blau 5, Blau 6, Schwarz 4, Schwarz 6]
 ÇOkan:[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9, Schwarz 10]
-~Okan:[Gelb 7, Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
-àHakan:[Gelb 7, Gelb 13, Rot 1, Rot 2, Rot 9, Rot 10, Rot 13, Blau 1, Blau 3, Blau 6, Blau 8, Blau 11, Schwarz 2, Schwarz 8, Schwarz 13]
-õ[Match starts!!, Please throw the first Token, Hakan., The thrown Token is {Gelb 7}., It's Okans turn., Do you want to take the thrown Token {Gelb 7} or get a new one?, There is 1 winning combination., This combination is [[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]], The winner is Okan. Congratulations!!, The next match is about to start.
+~Okan:[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]
+ÖHakan:[Joker, Gelb 8, Gelb 9, Rot 1, Rot 2, Rot 6, Rot 7, Blau 3, Blau 4, Blau 6, Blau 11, Blau 13, Schwarz 5, Schwarz 6, Schwarz 7]
+õ[Match starts!!, Please throw the first Token, Hakan., The thrown Token is {Rot 11}., It's Okans turn., Do you want to take the thrown Token {Rot 11} or get a new one?, There is 1 winning combination., This combination is [[Gelb 9, Gelb 10, Rot 1, Rot 2, Rot 3, Rot 4, Rot 9, Rot 10, Rot 11, Rot 12, Rot 13, Blau 9, Blau 10, Schwarz 9]], The winner is Okan. Congratulations!!, The next match is about to start.
 
 
 
 
 [, Match starts!!, Please throw the first Token, Hakan., A player left or exited the game.]
-âHakan:[Gelb 2, Gelb 5, Gelb 6, Gelb 10, Rot 1, Rot 13, Blau 1, Blau 3, Blau 5, Blau 6, Blau 9, Blau 11, Schwarz 5, Schwarz 5, Schwarz 9]
-}Hakan:[Joker, Gelb 2, Gelb 8, Gelb 9, Rot 2, Rot 3, Rot 4, Rot 7, Rot 10, Rot 11, Rot 12, Blau 4, Blau 6, Blau 7, Schwarz 1]
-ÖOkan:[Gelb 3, Gelb 3, Gelb 5, Gelb 10, Rot 1, Rot 6, Rot 6, Rot 7, Rot 8, Blau 6, Blau 13, Schwarz 5, Schwarz 10, Schwarz 13, Heavy]
-ôHakan:[Gelb 3, Gelb 6, Gelb 7, Gelb 13, Rot 5, Blau 6, Blau 11, Schwarz 1, Schwarz 1, Schwarz 2, Schwarz 3, Schwarz 4, Schwarz 5, Schwarz 6, Schwarz 12]
-ÖOkan:[Gelb 2, Gelb 9, Rot 2, Rot 4, Rot 9, Rot 12, Rot 13, Blau 1, Blau 4, Blau 9, Blau 11, Schwarz 8, Schwarz 9, Schwarz 13, Heavy]
-âOkan:[Gelb 2, Gelb 9, Rot 2, Rot 4, Rot 9, Rot 12, Rot 13, Blau 1, Blau 4, Blau 9, Blau 11, Schwarz 4, Schwarz 8, Schwarz 9, Schwarz 13]
-ïHakan:[Gelb 3, Gelb 6, Gelb 7, Gelb 13, Rot 5, Blau 6, Blau 11, Schwarz 1, Schwarz 1, Schwarz 2, Schwarz 3, Schwarz 4, Schwarz 5, Schwarz 12, Heavy]
+åHakan:[Gelb 9, Rot 1, Rot 3, Rot 5, Rot 6, Rot 8, Blau 6, Blau 7, Blau 11, Blau 13, Schwarz 2, Schwarz 5, Schwarz 5, Schwarz 8, Schwarz 12]
+ÇHakan:[Joker, Gelb 5, Gelb 6, Gelb 7, Gelb 11, Rot 5, Rot 6, Rot 10, Rot 12, Blau 3, Blau 5, Blau 6, Blau 9, Blau 10, Schwarz 13]
+çOkan:[Gelb 3, Gelb 4, Gelb 4, Gelb 8, Rot 3, Rot 9, Rot 11, Blau 1, Blau 4, Schwarz 1, Schwarz 2, Schwarz 11, Schwarz 12, Schwarz 12, Heavy]
+äHakan:[Gelb 1, Gelb 2, Rot 7, Rot 12, Rot 13, Blau 5, Blau 5, Blau 8, Blau 8, Blau 9, Blau 11, Blau 13, Schwarz 3, Schwarz 8, Schwarz 12]
+àOkan:[Gelb 6, Gelb 6, Rot 2, Rot 3, Rot 7, Rot 10, Rot 13, Blau 1, Blau 7, Blau 13, Schwarz 5, Schwarz 7, Schwarz 7, Schwarz 13, Heavy]
+âOkan:[Gelb 4, Gelb 6, Gelb 6, Rot 2, Rot 3, Rot 7, Rot 10, Rot 13, Blau 1, Blau 7, Blau 13, Schwarz 5, Schwarz 7, Schwarz 7, Schwarz 13]
+ÖHakan:[Gelb 1, Gelb 2, Rot 7, Rot 12, Rot 13, Blau 5, Blau 5, Blau 8, Blau 8, Blau 9, Blau 11, Blau 13, Schwarz 3, Schwarz 8, Heavy]

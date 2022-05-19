@@ -14,7 +14,7 @@ ones, since the idea of cheating with a known deformation of the token doesn't r
 
 ### Run
 
-To start the Emualtor, just run the Main Class.
+To start the Emualtor, just run the Main Class...
 
 ```shell
 gradle run
@@ -22,6 +22,16 @@ gradle run
 
 ```shell
 gradle run --args="YOUR NAMES :)"
+```
+
+... or run the .jar file in build/libs.
+
+```shell
+java -jar build/libs/Okey-VERSION.jar
+```
+
+```shell
+java -jar build/libs/Okey-VERSION.jar YOUR NAMES :)
 ```
 
 As for now, there is no GUI, but I will make sure to implement it soon.

@@ -4,11 +4,13 @@ import Output.Output;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
 
 class Game {
     final int maxWaitTime = 100;
@@ -43,6 +45,9 @@ class Game {
         this(null);
     }
 
+    /**
+     * Starts the game. As long as no one lost or exited it will keep running.
+     */
     public void start() {
         while (noOneLost()) {
             Player winner = currentMatch.start();
@@ -53,8 +58,27 @@ class Game {
             endOfMatch(winner);
             currentMatch = new Match(players, out, this);
         }
+        removeLosers();
+        if (players[1] != null) start();
     }
 
+    /**
+     * Removes all losers from the game.
+     */
+    private void removeLosers() {
+        Set<Player> stillInGame =
+                score.keySet().stream().filter(k -> score.get(k) != 0).collect(Collectors.toCollection(HashSet::new));
+        score = score.keySet().stream().filter(k -> score.containsKey(k)).collect(Collectors.toMap(Function.identity(),
+                k -> score.get(k)));
+        players = stillInGame.toArray(Player[]::new);
+    }
+
+    /**
+     * Initialized player scores. If there are not 2 to 4 players, or they have the same name, it will ask for the
+     * players to type in their names first.
+     *
+     * @return
+     */
     private int init() {
         if (players == null) return -1;
 
@@ -94,9 +118,10 @@ class Game {
         return s;
     }
 
+    /**
+     * Asks for players to enter their names.
+     */
     private void newPlayers() {
-        Scanner in = new Scanner(System.in);
-
         out.println("Please enter the player names.");
 
         String s = waitForInput(100);
@@ -105,12 +130,12 @@ class Game {
         init();
     }
 
+    /**
+     * Prints relevant infos at the end of each match and reduces the losers points.
+     *
+     * @param winner the winner of the last match
+     */
     private void endOfMatch(Player winner) {
-        if (winner == null) {
-            printCandy();
-            return;
-        }
-
         reducePoints(winner);
 
         if (noOneLost())
@@ -122,6 +147,9 @@ class Game {
         }
     }
 
+    /**
+     * Print some sweets for the players
+     */
     private void printCandy() {
         out.println("Have some candy.\n\n");
         out.println("""
@@ -148,36 +176,67 @@ class Game {
                     """);
     }
 
+    /**
+     * Reduces the points of the losers of the last match.
+     *
+     * @param winner winner of the last game
+     */
     private void reducePoints(Player winner) {
         for (Player p : players) if (!p.equals(winner)) score.put(p, score.get(p) - 2);
     }
 
+    /**
+     * Finds out if someone has lost the game
+     *
+     * @return
+     */
     public boolean noOneLost() {
         return score.entrySet().stream().filter(v -> v.getValue() == 0).count() == 0;
     }
 
+    /**
+     * Gives a string, with the scores of all players
+     *
+     * @return
+     */
     public String getScore() {
         String s = "";
-        for (Player p :
-                players) {
-            s += p.toString() + getScoreOf(p);
-        }
+        for (Player p : players)
+            s += p.toString() + ": " + getScoreOf(p) + '\n';
         return s;
     }
 
+    /**
+     * Gives the score of a given player
+     *
+     * @param p Player to look up the score of
+     * @return
+     */
     public int getScoreOf(Player p) {
         return score.get(p);
     }
 
+    /**
+     * Gives the score of a given player
+     *
+     * @param s Name of player to look up the score of
+     * @return
+     */
     public int getScoreOf(String s) {
         return score.get(getPlayer(s));
     }
 
+    /**
+     * Gives the player object with the given name
+     *
+     * @param s Name of player to get the object of
+     * @return
+     */
     private Player getPlayer(String s) {
         for (Player p : players) if (p.equals(s)) return p;
         return null;
     }
-
+    
     public void setPlayers(Player[] players) {
         this.players = (Player[]) players;
     }

@@ -33,6 +33,10 @@ public class Token implements Comparable {
         return ((Token) o1).compareTo((Token) o2);
     }
 
+    public static String toString2(Token t) {
+        return Token.class.getName() + "@" + Integer.toHexString(t.hashCode());
+    }
+
     int getColor() {
         return color;
     }
@@ -72,5 +76,11 @@ public class Token implements Comparable {
         Token t = (Token) o;
         int i = this.color - t.getColor();
         return i == 0 ? (this.number - t.getNumber()) : i;
+    }
+
+    public int compareToByNumber(Object o) {
+        Token t = (Token) o;
+        int i = this.number - t.getNumber();
+        return i == 0 ? (this.color - t.getColor()) : i;
     }
 }

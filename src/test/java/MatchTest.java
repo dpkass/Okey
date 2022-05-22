@@ -65,7 +65,7 @@ public class MatchTest {
 
     @Test
     @DisplayName ("the match starts, greets and asks the player to throw a token.")
-    void test_7() throws IOException, InterruptedException {
+    void test_7() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
         Game m = new Game(new Player[] { p, p2 }, new StringReader("exit"), out);
@@ -78,7 +78,7 @@ public class MatchTest {
 
     @Test
     @DisplayName ("the match answers to a thrown token, which was in ones hand, correctly (first  player).")
-    void test_8() throws IOException, InterruptedException {
+    void test_8() throws IOException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
         Game m = new Game(new Player[] { p, p2 }, new FileReader("TestInputs/test_8"), out);
@@ -96,7 +96,7 @@ public class MatchTest {
 
     @Test
     @DisplayName ("the match asks which Token the player wants and answers to a thrown token, which was in ones hand, correctly (second player).")
-    void test_9() throws IOException, InterruptedException {
+    void test_9() throws IOException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
         Game m = new Game(new Player[] { p, p2 }, new FileReader("TestInputs/test_9"), out);
@@ -115,7 +115,7 @@ public class MatchTest {
 
     @Test
     @DisplayName ("the match announces the right players name.")
-    void test_10() throws IOException, InterruptedException {
+    void test_10() throws IOException {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");
         Game m = new Game(new Player[] { p, p2 }, new FileReader("TestInputs/test_10"), out);
@@ -171,8 +171,7 @@ public class MatchTest {
         Match m = new Match(new Player[] { p, p2 }, null);
 
         Token[] tokens = new Token[15];
-        Token t = new Token(1, 1);
-        tokens[0] = t;
+        tokens[0] = new Token(Token.HEAVY, -1);
         tokens[1] = new Token(1, 2);
         tokens[2] = new Token(1, 3);
         tokens[3] = new Token(1, 4);
@@ -189,11 +188,8 @@ public class MatchTest {
         tokens[14] = new Token(3, 6);
 
         p.hand = tokens;
-        m.playerHandMap.put(p, tokens);
 
-        assertThat(m.currPlayerWon(t)).isTrue();
-
-        System.out.println(out.output);
+        assertThat(m.currPlayerWon()).isTrue();
     }
 
     @Test
@@ -204,8 +200,7 @@ public class MatchTest {
         Match m = new Match(new Player[] { p, p2 }, null);
 
         Token[] tokens = new Token[15];
-        Token t = new Token(1, 1);
-        tokens[0] = t;
+        tokens[0] = new Token(Token.HEAVY, -1);
         tokens[1] = new Token(1, 2);
         tokens[2] = new Token(2, 2);
         tokens[3] = new Token(3, 2);
@@ -222,9 +217,8 @@ public class MatchTest {
         tokens[14] = new Token(3, 4);
 
         p.hand = tokens;
-        m.playerHandMap.put(p, tokens);
 
-        assertThat(m.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon()).isTrue();
     }
 
 
@@ -236,8 +230,7 @@ public class MatchTest {
         Match m = new Match(new Player[] { p, p2 }, null);
 
         Token[] tokens = new Token[15];
-        Token t = new Token(1, 1);
-        tokens[0] = t;
+        tokens[0] = new Token(Token.HEAVY, -1);
         tokens[1] = new Token(1, 2);
         tokens[2] = new Token(1, 3);
         tokens[3] = new Token(1, 4);
@@ -254,9 +247,8 @@ public class MatchTest {
         tokens[14] = new Token(3, 10);
 
         p.hand = tokens;
-        m.playerHandMap.put(p, tokens);
 
-        assertThat(m.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon()).isTrue();
     }
 
     @Test
@@ -267,8 +259,7 @@ public class MatchTest {
         Match m = new Match(new Player[] { p, p2 }, null);
 
         Token[] tokens = new Token[15];
-        Token t = new Token(1, 1);
-        tokens[0] = t;
+        tokens[0] = new Token(Token.HEAVY, -1);
         tokens[1] = new Token(1, 2);
         tokens[2] = new Token(1, 3);
         tokens[3] = new Token(1, 4);
@@ -285,9 +276,8 @@ public class MatchTest {
         tokens[14] = new Token(3, 10);
 
         p.hand = tokens;
-        m.playerHandMap.put(p, tokens);
 
-        assertThat(m.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon()).isTrue();
     }
 
     @Test
@@ -298,8 +288,7 @@ public class MatchTest {
         Match m = new Match(new Player[] { p, p2 }, null);
 
         Token[] tokens = new Token[15];
-        Token t = new Token(1, 1);
-        tokens[0] = t;
+        tokens[0] = new Token(Token.HEAVY, -1);
         tokens[1] = new Token(1, 2);
         tokens[2] = new Token(1, 3);
         tokens[3] = new Token(1, 4);
@@ -316,9 +305,8 @@ public class MatchTest {
         tokens[14] = new Token(1, 9);
 
         p.hand = tokens;
-        m.playerHandMap.put(p, tokens);
 
-        assertThat(m.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon()).isTrue();
     }
 
     @Test
@@ -329,8 +317,7 @@ public class MatchTest {
         Match m = new Match(new Player[] { p, p2 }, out, null);
 
         Token[] tokens = new Token[15];
-        Token t = new Token(1, 1);
-        tokens[0] = t;
+        tokens[0] = new Token(Token.HEAVY, -1);
         tokens[1] = new Token(1, 2);
         tokens[2] = new Token(1, 3);
         tokens[3] = new Token(0, 4);
@@ -347,9 +334,8 @@ public class MatchTest {
         tokens[14] = new Token(3, 10);
 
         p.hand = tokens;
-        m.playerHandMap.put(p, tokens);
 
-        assertThat(m.currPlayerWon(t)).isFalse();
+        assertThat(m.currPlayerWon()).isFalse();
     }
 
     @Test
@@ -360,8 +346,7 @@ public class MatchTest {
         Match m = new Match(new Player[] { p, p2 }, null);
 
         Token[] tokens = new Token[15];
-        Token t = new Token(1, 1);
-        tokens[0] = t;
+        tokens[0] = new Token(Token.HEAVY, -1);
         tokens[1] = new Token(1, 2);
         tokens[2] = new Token(1, 3);
         tokens[3] = new Token(1, 4);
@@ -378,9 +363,37 @@ public class MatchTest {
         tokens[14] = new Token(3, 10);
 
         p.hand = tokens;
-        m.playerHandMap.put(p, tokens);
 
-        assertThat(m.currPlayerWon(t)).isTrue();
+        assertThat(m.currPlayerWon()).isTrue();
+    }
+
+    @Test
+    @DisplayName ("a player with a winning hand is declared the winner. Duplicate flush.")
+    void test_21() {
+        Player p = new Player("Hakan");
+        Player p2 = new Player("Okan");
+        Match m = new Match(new Player[] { p, p2 }, null);
+
+        Token[] tokens = new Token[15];
+        tokens[0] = new Token(Token.HEAVY, -1);
+        tokens[1] = new Token(1, 2);
+        tokens[2] = new Token(2, 2);
+        tokens[3] = new Token(3, 2);
+        tokens[4] = new Token(0, 2);
+        tokens[5] = new Token(1, 2);
+        tokens[6] = new Token(2, 2);
+        tokens[7] = new Token(3, 2);
+        tokens[8] = new Token(0, 2);
+        tokens[9] = new Token(1, 1);
+        tokens[10] = new Token(2, 1);
+        tokens[11] = new Token(3, 1);
+        tokens[12] = new Token(1, 4);
+        tokens[13] = new Token(2, 4);
+        tokens[14] = new Token(3, 4);
+
+        p.hand = tokens;
+
+        assertThat(m.currPlayerWon()).isTrue();
     }
 
     @Test
@@ -415,25 +428,23 @@ public class MatchTest {
         pw.close();
 
         p2.hand = tokens;
-        g.getCurrentMatch().playerHandMap.put(p2, tokens);
 
         g.start();
-
-        System.out.println(out.output);
 
         String s1 = "Match starts!!";
         String s2 = "Please throw the first Token, Hakan.";
         String s3 = "The thrown Token is {" + p1Throw + "}.";
         String s4 = "It's Okans turn.";
         String s5 = "Do you want to take the thrown Token {" + p1Throw + "} or get a new one?";
-        String s6 = "There is 1 winning combination.";
-        String s7 = out.output.get(6);
-        String s8 = "The winner is Okan. Congratulations!!";
-        String s9 = "The next match is about to start.\n\n\n\n\n";
-        String s10 = "Please throw the first Token, Hakan.";
-        String s11 = "A player left or exited the game.";
+        String s6 = "The thrown Token is {" + p1Throw + "}.";
+        String s7 = "There is 1 winning combination.";
+        String s8 = out.output.get(7);
+        String s9 = "The winner is Okan. Congratulations!!";
+        String s10 = "The next match is about to start.\n\n\n\n\n";
+        String s11 = out.output.size() > 10 ? out.output.get(11) : null;
+        String s12 = "A player left or exited the game.";
 
-        assertThat(out.output).containsExactly(s1, s2, s3, s4, s5, s6, s7, s8, s9, s1, s10, s11);
+        assertThat(out.output).containsExactly(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s1, s11, s12);
     }
 
     void wait(int i) throws InterruptedException {

@@ -4,6 +4,7 @@ import SpecialSets.Sets;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -12,11 +13,11 @@ import static java.util.stream.Collectors.groupingBy;
 
 class Match {
     Game game;
-    Map<Player, Token[]> playerHandMap = new HashMap<>();
     Player[] players;
-    int currentPlayer = 0;
+    int curr = 0;
     List<Token> tokens = new ArrayList<>();
     Token joker = new Token(-1, -1);
+    Token heavy = new Token(Token.HEAVY, -1);
     Token lastThrown = null;
     Player winner = null;
     Output out;
@@ -32,7 +33,7 @@ class Match {
         this(players, new KonsoleOutput(), game);
     }
 
-    public static Predicate<Token[]> distinctByKey(Function<? super Token[], ?> keyExtractor) {
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
     }
@@ -84,7 +85,6 @@ class Match {
             }
             temp[14] = new Token(Token.HEAVY, -1);
             p.setHand(temp);
-            playerHandMap.put(p, temp);
         }
         players[0].getNewToken(tokens.get(0));
         tokens.remove(0);
@@ -108,7 +108,7 @@ class Match {
     private int playFirst() {
         out.println("Match starts!!");
         showHand();
-        out.println("Please throw the first Token, " + players[currentPlayer] + ".");
+        out.println("Please throw the first Token, " + players[curr] + ".");
         if (thrownToken() < 0) return -1;
         return 0;
     }
@@ -123,15 +123,14 @@ class Match {
             showHand();
             if (thrownToken() < 0) return;
         }
-        out.println("The winner is " + winner + ". Congratulations!!");
     }
 
     /**
      * Gives the next Player the turn.
      */
     private void nextPlayer() {
-        currentPlayer = (currentPlayer + 1) % players.length;
-        out.println("It's " + players[currentPlayer] + "s turn.");
+        curr = (curr + 1) % players.length;
+        out.println("It's " + players[curr] + "s turn.");
         showHand();
         out.println("Do you want to take the thrown Token {" + lastThrown + "} or get a new one?");
     }
@@ -148,10 +147,10 @@ class Match {
 
         switch (s) {
             case "new" -> {
-                players[currentPlayer].getNewToken(tokens.get(0));
+                players[curr].getNewToken(tokens.get(0));
                 tokens.remove(0);
             }
-            case "thrown" -> players[currentPlayer].getNewToken(lastThrown);
+            case "thrown" -> players[curr].getNewToken(lastThrown);
             case "exit" -> {return -1;}
             default -> {
                 out.println("Please write \"new\" for a new Token or \"thrown\" for the thrown Token.");
@@ -164,46 +163,70 @@ class Match {
     /**
      * Tests if a player threw a Token that he has in his hand. If he did, his hand will be adjusted.
      *
-     * @return 0 means the match finished with a winner. -1 means player wants to exit or player didn't respond.
+     * @return 0 on token was thrown (or winner), -1 on player wants to exit or didn't respond.
      */
     private int thrownToken() {
         String s = game.waitForInput(100);
         if (s == null) return -1;
-        Token thrown = null;
+        String[] parts = s.split(" ");
 
         try {
-            if ((thrown = throwAction(s)) == null)
-                if (winner != null) return 0;
-                else return -1;
+            switch (throwAction(parts)) {
+                case -1 -> {return -1;}
+                case 1 -> {return thrownToken();}
+                case 2 -> {return 0;}
+            }
         } catch (IllegalArgumentException e) {
             out.println("Invalid Argument. Please write the color of your token and then the number e.g. \"Gelb 5\". For Joker, write \"Joker\".");
             return thrownToken();
         }
-
-        if (!isInCurrPlayersHand(thrown)) {
-            out.println("The thrown Token is not in your Hand. Please throw a Token you have.");
-            return thrownToken();
-        } else {
-            out.println("The thrown Token is {" + thrown + "}.");
-            lastThrown = thrown;
-            removeFromCurrPlayersHand(thrown);
-        }
         return 0;
     }
 
-    private Token throwAction(String s) {
-        String[] parts = s.split(" ");
-        if (parts[0].equals("exit")) return null;
-        else if (parts[0].equals("Joker")) return new Token(-1, -1);
-        else if (parts.length == 2) return new Token(parts[0], Integer.parseInt(parts[1]));
-        else if (parts.length == 3 && parts[0].equals("win")) {
-            Token thrown = new Token(parts[1], Integer.parseInt(parts[2]));
-            if (currPlayerWon(thrown)) {
-                winner = players[currentPlayer];
-                return null;
-            } else {
-                out.println("If you throw the token {" + thrown + "} it isn't a win. Please throw another token.");
-                players[currentPlayer].hand[14] = thrown;
+    private int testThrown(Token thrown) {
+        if (!isInCurrPlayersHand(thrown)) {
+            out.println("The thrown Token is not in your Hand. Please throw a Token you have.");
+            return thrownToken();
+        }
+        out.println("The thrown Token is {" + thrown + "}.");
+        lastThrown = thrown;
+        removeFromCurrPlayersHand(thrown);
+        return 0;
+    }
+
+    /**
+     * determines the action to take next, depending on the input of the player
+     *
+     * @param parts input of the player
+     * @return ID Code based on input. -1 on exit, 0 on thrown Token, 1 on show or wrong win and 2 on win.
+     */
+    private int throwAction(String[] parts) {
+        switch (parts[0]) {
+            case "exit" -> {return -1;}
+
+            case "Joker" -> {return testThrown(joker);}
+
+            case "show" -> {
+                showHand();
+                return 1;
+            }
+
+            case "win" -> {
+                Token t = parts.length == 3 ? new Token(parts[1], Integer.parseInt(parts[2])) : joker;
+                testThrown(t);
+                if (currPlayerWon()) {
+                    winner = players[curr];
+                    return 2;
+                } else {
+                    out.println("If you throw the token {" + t + "} it isn't a win. Please throw another token.");
+                    players[curr].hand[14] = t;
+                    return 1;
+                }
+            }
+
+            default -> {
+                if (parts.length == 2)
+                    return testThrown(new Token(parts[0], Integer.parseInt(parts[1])));
             }
         }
         throw new IllegalArgumentException();
@@ -215,36 +238,16 @@ class Match {
      * @param needle Token to remove from current Players Hand
      */
     private void removeFromCurrPlayersHand(Token needle) {
-        Token[] hand = playerHandMap.get(players[currentPlayer]);
-        int i = getIndex(hand, needle);
-        swap(hand, i, 14);
-        hand[14] = new Token(Token.HEAVY, -1);
-    }
-
-    /**
-     * Gives the index of a given needle
-     *
-     * @param hand   Array to search in
-     * @param needle Token to look for
-     * @return index of needle in Array
-     */
-    private int getIndex(Token[] hand, Token needle) {
-        for (int i = 0; i < hand.length; i++)
-            if (hand[i].equals(needle)) return i;
-        return -1;
-    }
-
-    /**
-     * Swaps the elements in the array at the two given indices.
-     *
-     * @param a Array to swap in
-     * @param i First index to swap
-     * @param j Second index to swap
-     */
-    private void swap(Token[] a, int i, int j) {
-        Token t = a[i];
-        a[i] = a[j];
-        a[j] = t;
+        AtomicBoolean b = new AtomicBoolean(false);     // so it only deletes one token if there are duplicate ones
+        players[curr].hand = Arrays.stream(players[curr].hand)
+                                   .map(o -> {
+                                       if (o.equals(needle) && !b.get()) {
+                                           b.set(true);
+                                           return heavy;
+                                       }
+                                       return o;
+                                   })
+                                   .toArray(Token[]::new);
     }
 
     /**
@@ -254,37 +257,29 @@ class Match {
      * @return thrown in current players hand?
      */
     private boolean isInCurrPlayersHand(Token needle) {
-        Token[] temp = playerHandMap.get(players[currentPlayer]);
-        for (Token token : temp)
-            if (token.equals(needle))
-                return true;
-        return false;
+        return Arrays.stream(players[curr].hand).anyMatch(t -> t.equals(needle));
     }
 
     /**
      * Displays the hand of the current player.
      */
-    Map<Player, Token[]> showHand() {
-        Arrays.sort(players[currentPlayer].hand);
-        System.out.println(playerHandMap.entrySet().stream().filter(e -> e.getKey() == players[currentPlayer]).map(e -> e.getKey() + ":" + Arrays.toString(e.getValue()))
-                                        .collect(Collectors.joining("|")));
-        return playerHandMap;
+    Player[] showHand() {
+        Arrays.sort(players[curr].hand);
+        System.out.println(Arrays.toString(players[curr].hand));
+        return players;
     }
 
     /**
      * Tests if the current Player wins after removing a given token
      *
-     * @param t token to remove
      * @return true if win, false if not.
      */
-    boolean currPlayerWon(Token t) {
-        if (isInCurrPlayersHand(t))
-            removeFromCurrPlayersHand(t);
-        int jokerCount = countJokersOfCurrentPlayer();
+    boolean currPlayerWon() {
+        int jokerCount = countJokersOfCurrPlayer();
 
         Set<Token[]> combinations = new HashSet<>();
 
-        combinations.addAll(getAllStraightsInCurrPlayersHand(jokerCount));
+        combinations.addAll(getAllStraightsInCurrPlayersHand());
         combinations.addAll(getAllFlushesInCurrPlayersHand());
 
         Set<Set<Token[]>> powerSet = new Sets<Token[]>().powerSetWithMaxSize(combinations, 4);
@@ -313,16 +308,28 @@ class Match {
      * @param jokers amount of jokers the player has
      */
     private Set<Token[]> removeNonWinningCombinations(Set<Token[]> set, int jokers) {
-        return set.stream().filter(v -> (v.length + jokers - countJokers(v) == 14)).filter(this::hasNoDuplicates).filter(distinctByKey(Arrays::toString)).collect(Collectors.toSet());         // remove arrays with too few or many token
+        return set.stream()
+                  .filter(v -> (v.length + jokers - countJokers(v) == 14))
+                  .filter(this::hasNoDuplicates)
+                  .filter(distinctByKey(Arrays::toString))
+                  .collect(Collectors.toSet());// remove arrays with too few or many token
     }
 
+    /**
+     * Checks if given Token[] contains duplicates. Since jokers are made from the same instance, reduce by one if there
+     * are two jokers.
+     *
+     * @param t Array to be checked
+     * @return true if there are no duplicates in the array, else false.
+     */
     private boolean hasNoDuplicates(Token[] t) {
         Arrays.sort(t);
-
-        for (int i = 0; i < t.length - 1; i++)
-            if (t[i] == t[i + 1]) return false;
-
+        for (int i = 1; i < t.length; i++) if (t[i - 1] == t[i]) return false;
         return true;
+
+//        int i = countJokers(t);
+//        i = i == 2 ? 1 : i;
+//        return Arrays.stream(t).filter(distinctByKey(Token::toString2)).count() == t.length - i; //
     }
 
     /**
@@ -333,16 +340,15 @@ class Match {
     private Set<Token[]> reduce(Set<Set<Token[]>> powerSet) {
         Set<Token[]> res = new HashSet<>();
         for (Set<Token[]> set : powerSet) {
-            int elements = 0, i = 0;
-            for (Object[] t : set)
-                elements += t.length;
-
-            if (elements < 12 || elements > 14) continue;
-
-            Token[] t = new Token[elements];
-            for (Object[] tokens : set) for (Object token : tokens) t[i++] = (Token) token;
-
-            res.add(t);
+            List<Token> list = new ArrayList<>();
+            for (Object[] tokens1 : set) {
+                for (Object token : tokens1) {
+                    list.add((Token) token);
+                }
+            }
+            var temp = list.toArray(new Token[0]);
+            if (temp.length < 15 && temp.length > 11)
+                res.add(temp);
         }
         return res;
     }
@@ -352,23 +358,18 @@ class Match {
      *
      * @return amount of jokers the current player hand.
      */
-    private int countJokersOfCurrentPlayer() {
-        return countJokers(players[currentPlayer].hand);
+    private int countJokersOfCurrPlayer() {
+        return countJokers(players[curr].hand);
     }
 
     /**
      * Counts the amount of jokers in the given Array.
      *
+     * @param tokens Arrays to look for jokers in
      * @return amount of jokers the given Array.
      */
-    private int countJokers(Token[] t) {
-        if (t.length < 3) return 0;
-
-        Arrays.sort(t);
-
-        if (t[1].getColor() == Token.JOKER) return 2;
-        if (t[0].getColor() == Token.JOKER) return 1;
-        return 0;
+    private int countJokers(Token[] tokens) {
+        return (int) Arrays.stream(tokens).filter(t -> t.equals(joker)).count();
     }
 
     /**
@@ -377,20 +378,22 @@ class Match {
      * <p>
      * Depending on the amount of jokers there might be an offset, where the joker would fit in.
      *
-     * @param offset amount of possible skips
      * @return all straights in the hand of the current player
      */
-    private List<Token[]> getAllStraightsInCurrPlayersHand(int offset) {
+    private List<Token[]> getAllStraightsInCurrPlayersHand() {
         List<Token[]> res = new ArrayList<>();
-        Token[] tokens = players[currentPlayer].hand;
+        Token[] tokens = players[curr].hand;
 
         Arrays.sort(tokens);
 
         Map<Integer, List<Token>> colorMap =
-                Arrays.stream(tokens).filter(t -> t.getNumber() >= 0).filter(t -> t.getColor() >= 0).collect(groupingBy(Token::getColor));
+                Arrays.stream(tokens)
+                      .filter(t -> t.getNumber() >= 0)
+                      .filter(t -> t.getColor() >= 0)
+                      .collect(groupingBy(Token::getColor));
 
         for (List<Token> list : colorMap.values())
-            res.addAll(getAllStraightsFromColorList(list, countJokersOfCurrentPlayer()));
+            res.addAll(getAllStraightsFromColorList(list, countJokersOfCurrPlayer()));
 
         return res;
     }
@@ -402,6 +405,9 @@ class Match {
         int tempJoker = jokerInt, jokerInsert = -1;
 
         for (int i = 0; i < list.size(); i++) {
+            if (i > 0 && list.get(i).equals(list.get(i - 1)))
+                continue;
+
             int distanceToNext = list.get((i + 1) % list.size()).getNumber() - list.get(i).getNumber();
             if (!temp.contains(list.get(i)))
                 temp.add(list.get(i));
@@ -445,18 +451,18 @@ class Match {
     private List<Token[]> getAllFlushesInCurrPlayersHand() {
         List<Token[]> res = new ArrayList<>();
         List<Token> used = new ArrayList<>();
-        Token[] tokens = players[currentPlayer].hand;
+        Token[] tokens = players[curr].hand;
 
         Arrays.sort(tokens);
 
         Set<Token> partRes = new HashSet<>();
         for (Token t : tokens) {
             partRes.add(t);
-            for (Token t2 : tokens) {
-                if (t == t2) continue;
-                if (t.getNumber() == t2.getNumber() && t.getColor() != t2.getColor() && !used.contains(t2))
-                    partRes.add(t2);
-            }
+            Arrays.stream(tokens)
+                  .filter(t2 -> t.getNumber() == t2.getNumber())
+                  .filter(t2 -> t.getColor() != t2.getColor())
+                  .filter(t2 -> !used.contains(t2))
+                  .forEach(partRes::add);
             used.add(t);
             if (partRes.size() >= 3) res.addAll(new Sets<Token>().subsetsWithMinSize(partRes.stream().toList(), 3));
             partRes.clear();

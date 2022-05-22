@@ -9,9 +9,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toMap;
-
 class Game {
     final int maxWaitTime = 100;
 
@@ -49,7 +46,7 @@ class Game {
      * Starts the game. As long as no one lost or exited it will keep running.
      */
     public void start() {
-        while (noOneLost()) {
+        while (playersLeft()) {
             Player winner = currentMatch.start();
             if (winner == null) {
                 out.println("A player left or exited the game.");
@@ -58,8 +55,6 @@ class Game {
             endOfMatch(winner);
             currentMatch = new Match(players, out, this);
         }
-        removeLosers();
-        if (players[1] != null) start();
     }
 
     /**
@@ -137,11 +132,13 @@ class Game {
      */
     private void endOfMatch(Player winner) {
         reducePoints(winner);
+        removeLosers();
 
-        if (noOneLost())
+        out.println("The winner is " + winner + ". Congratulations!!");
+        if (playersLeft())
             out.println("The next match is about to start.\n\n\n\n\n");
         else {
-            out.println("You won the game!!");
+            out.println(winner + " won the game!!");
             printCandy();
             out.println("\n\nSee you next time.");
         }
@@ -186,12 +183,12 @@ class Game {
     }
 
     /**
-     * Finds out if someone has lost the game
+     * Finds out if there are at least two players left
      *
      * @return
      */
-    public boolean noOneLost() {
-        return score.entrySet().stream().filter(v -> v.getValue() == 0).count() == 0;
+    public boolean playersLeft() {
+        return players.length >= 2;
     }
 
     /**
@@ -236,7 +233,7 @@ class Game {
         for (Player p : players) if (p.equals(s)) return p;
         return null;
     }
-    
+
     public void setPlayers(Player[] players) {
         this.players = (Player[]) players;
     }

@@ -5,6 +5,7 @@ import SpecialSets.Sets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -283,36 +284,39 @@ class Match {
         combinations.addAll(getAllFlushesInCurrPlayersHand());
 
         Set<Set<Token[]>> powerSet = new Sets<Token[]>().powerSetWithMaxSize(combinations, 4);
-        Set<Token[]> cleanPowerSet = reduce(powerSet);
+        Map<Token[], Set<Token[]>> flatToCombMap = reduce(powerSet);
 
-        cleanPowerSet = removeNonWinningCombinations(cleanPowerSet, jokerCount);
+        flatToCombMap = removeNonWinningCombinations(flatToCombMap, jokerCount);
 
-        printCombinations(cleanPowerSet);
+        printCombinations(flatToCombMap);
 
-        return cleanPowerSet.size() > 0;
+        return flatToCombMap.size() > 0;
     }
 
-    private void printCombinations(Set<Token[]> cleanPowerSet) {
-        out.println(String.format("There %s %d winning combination%s.", cleanPowerSet.size() == 1 ? "is" : "are",
-                cleanPowerSet.size(), cleanPowerSet.size() == 1 ? "" : "s"));
-        if (cleanPowerSet.size() == 1) out.println(String.format("This combination is %s",
-                Arrays.deepToString(cleanPowerSet.toArray())));
-        else out.println(String.format("These combinations are %s",
-                Arrays.deepToString(cleanPowerSet.toArray())));
+    private void printCombinations(Map<Token[], Set<Token[]>> map) {
+        out.println(String.format("There %s %d winning combination%s.", map.size() == 1 ? "is" : "are",
+                map.size(), map.size() == 1 ? "" : "s"));
+
+        StringBuilder s = new StringBuilder();
+        for (Set<Token[]> set : map.values())
+            for (Object[] t : set)
+                s.append(Arrays.toString(t));
+
+        out.println(map.size() == 1 ? "This combination is " + s : "These combinations are " + s);
     }
 
     /**
      * Counts how many of the remaining combinations are not winning and removes them from the given set.
      *
-     * @param set    PowerSet of all combinations
+     * @param map    map of all flat Arrays to combined arrays
      * @param jokers amount of jokers the player has
      */
-    private Set<Token[]> removeNonWinningCombinations(Set<Token[]> set, int jokers) {
-        return set.stream()
+    private Map<Token[], Set<Token[]>> removeNonWinningCombinations(Map<Token[], Set<Token[]>> map, int jokers) {
+        return map.keySet().stream()
                   .filter(v -> (v.length + jokers - countJokers(v) == 14))
                   .filter(this::hasNoDuplicates)
                   .filter(distinctByKey(Arrays::toString))
-                  .collect(Collectors.toSet());// remove arrays with too few or many token
+                  .collect(Collectors.toMap(Function.identity(), map::get));
     }
 
     /**
@@ -329,7 +333,7 @@ class Match {
 
 //        int i = countJokers(t);
 //        i = i == 2 ? 1 : i;
-//        return Arrays.stream(t).filter(distinctByKey(Token::toString2)).count() == t.length - i; //
+//        return Arrays.stream(t).filter(distinctByKey(Token::toString2)).count() == t.length - i;
     }
 
     /**
@@ -337,8 +341,8 @@ class Match {
      *
      * @param powerSet powerSet within which we reduce
      */
-    private Set<Token[]> reduce(Set<Set<Token[]>> powerSet) {
-        Set<Token[]> res = new HashSet<>();
+    private Map<Token[], Set<Token[]>> reduce(Set<Set<Token[]>> powerSet) {
+        Map<Token[], Set<Token[]>> res = new HashMap<>();
         for (Set<Token[]> set : powerSet) {
             List<Token> list = new ArrayList<>();
             for (Object[] tokens1 : set) {
@@ -346,9 +350,9 @@ class Match {
                     list.add((Token) token);
                 }
             }
-            var temp = list.toArray(new Token[0]);
+            Token[] temp = list.toArray(new Token[0]);
             if (temp.length < 15 && temp.length > 11)
-                res.add(temp);
+                res.put(temp, set);
         }
         return res;
     }

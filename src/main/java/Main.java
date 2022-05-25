@@ -1,3 +1,6 @@
+import Game.Game;
+import Game.Player;
+
 import java.io.IOException;
 
 public class Main {

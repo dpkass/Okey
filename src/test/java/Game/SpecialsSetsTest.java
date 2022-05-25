@@ -1,3 +1,6 @@
+package Game;
+
+import Game.Token;
 import SpecialSets.Sets;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,11 +11,11 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("This test tests, if ")
+@DisplayName ("This test tests, if ")
 public class SpecialsSetsTest {
 
     @Test
-    @DisplayName("the method subsetsWithMinSize works.")
+    @DisplayName ("the method subsetsWithMinSize works.")
     void test_1() {
         Token t = new Token(1, 1);
         Token t2 = new Token(1, 2);
@@ -20,14 +23,14 @@ public class SpecialsSetsTest {
         Token t4 = new Token(1, 4);
         Token t5 = new Token(1, 5);
 
-        Set<Token[]> set = new Sets<Token>().subsetsWithMinSize(List.of(t, t2, t3, t4, t5), 3);
+        Set<Token[]> set = new Sets<Token>().subsetsWithMinSize(Token.class, List.of(t, t2, t3, t4, t5), 3);
 
-        assertThat(set).contains(new Token[]{t, t2, t3});
-        assertThat(set).contains(new Token[]{t, t2, t3, t4});
-        assertThat(set).contains(new Token[]{t, t2, t3, t4, t5});
-        assertThat(set).contains(new Token[]{t2, t3, t4});
-        assertThat(set).contains(new Token[]{t2, t3, t4, t5});
-        assertThat(set).contains(new Token[]{t3, t4, t5});
+        assertThat(set).contains(new Token[] { t, t2, t3 });
+        assertThat(set).contains(new Token[] { t, t2, t3, t4 });
+        assertThat(set).contains(new Token[] { t, t2, t3, t4, t5 });
+        assertThat(set).contains(new Token[] { t2, t3, t4 });
+        assertThat(set).contains(new Token[] { t2, t3, t4, t5 });
+        assertThat(set).contains(new Token[] { t3, t4, t5 });
     }
 
     private int tokenArrComparator(Token[] tokens, Token[] tokens1) {
@@ -39,7 +42,7 @@ public class SpecialsSetsTest {
     }
 
     @Test
-    @DisplayName("the method powerSetWithMaxSize works.")
+    @DisplayName ("the method powerSetWithMaxSize works.")
     void test_2() {
         Token t = new Token(1, 1);
         Token t2 = new Token(1, 2);

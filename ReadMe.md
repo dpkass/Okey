@@ -1,4 +1,4 @@
-# Okey Match Emulator
+# Okey Game Emulator
 
 In this small project I want to be able emulate a game of Okey.
 
@@ -9,8 +9,11 @@ a [Wikipedia link](https://en.wikipedia.org/wiki/Okey), if you want to learn mor
 
 ## My Version
 
-My version of the game is slighty different (rules below). I don't choose a seperate Joker, but just use the "fake"
+My version of the game is slighty different (rules below). I don't choose a separate Joker, but just use the "fake"
 ones, since the idea of cheating with a known deformation of the token doesn't really apply here.
+
+Also, everyone starts with 10 points and loses 2 points if a match is lost. If the opponent finishes with a joker, you
+loose 4 points.
 
 ### Run
 
@@ -36,7 +39,7 @@ java -jar build/libs/Okey-VERSION.jar YOUR NAMES :)
 
 As for now, there is no GUI, but I will make sure to implement it soon.
 
-## How to play (Game rules)
+## How to play (Game.Game rules)
 
 Exercpt from [Wikipedia.com](https://en.wikipedia.org/wiki/Okey).
 

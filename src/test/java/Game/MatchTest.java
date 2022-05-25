@@ -1,9 +1,12 @@
+package Game;
+
+import Game.Match;
+import Game.Player;
+import Game.Token;
 import Output.FakeOutput;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -239,7 +242,7 @@ public class MatchTest {
     }
 
     @Test
-    @DisplayName ("a player with a winning hand is declared the winner. Flush warp around (12->13->1).")
+    @DisplayName ("a player with a winning hand is declared the winner. Straight warp around (12->13->1).")
     void test_19() {
         Player p = new Player("Hakan");
         Player p2 = new Player("Okan");

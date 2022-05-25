@@ -1,3 +1,5 @@
+package Game;
+
 import Output.FakeOutput;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -148,7 +150,7 @@ public class GameTest {
 
         assertThat(out.output).hasSize(6);
     }
-    
+
     @Test
     @DisplayName ("the match will terminate after someone won the game.")
     void test_20() throws FileNotFoundException {

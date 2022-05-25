@@ -1,3 +1,7 @@
+package Game;
+
+import org.jetbrains.annotations.NotNull;
+
 public class Token implements Comparable {
     final static int JOKER = -1;
     final static int GELB = 0;
@@ -10,8 +14,8 @@ public class Token implements Comparable {
      */
     final static int HEAVY = 4;
 
-    private int color;
-    private int number;
+    private final int color;
+    private final int number;
 
     Token(int color, int number) {
         this.color = color;
@@ -30,11 +34,7 @@ public class Token implements Comparable {
     }
 
     public static int compareToStatic(Object o1, Object o2) {
-        return ((Token) o1).compareTo((Token) o2);
-    }
-
-    public static String toString2(Token t) {
-        return Token.class.getName() + "@" + Integer.toHexString(t.hashCode());
+        return ((Token) o1).compareTo(o2);
     }
 
     int getColor() {
@@ -72,7 +72,11 @@ public class Token implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NotNull Object o) {
+        return compareToByColor(o);
+    }
+
+    public int compareToByColor(Object o) {
         Token t = (Token) o;
         int i = this.color - t.getColor();
         return i == 0 ? (this.number - t.getNumber()) : i;

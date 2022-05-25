@@ -1,4 +1,6 @@
-import java.io.IOException;
+package Game;
+
+import Game.Game;
 
 public class WaitingTester implements Runnable {
     private Thread t;

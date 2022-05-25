@@ -1,8 +1,10 @@
-class Player {
+package Game;
+
+public class Player {
     String name;
     Token[] hand;
 
-    Player(String name) {
+    public Player(String name) {
         this.name = name;
     }
 

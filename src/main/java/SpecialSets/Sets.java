@@ -1,14 +1,17 @@
 package SpecialSets;
 
+import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Sets<T> {
 
-
     /**
-     * @param originalSet
-     * @param max
-     * @return
+     * Creates a powerset, where each set has a max size of the given param.
+     *
+     * @param originalSet set to create a powerset of
+     * @param max         max size of the sets
+     * @return the powerset
      */
     public Set<Set<T>> powerSetWithMaxSize(Set<T> originalSet, int max) {
         long resultSize = (long) Math.pow(2, originalSet.size());
@@ -17,7 +20,6 @@ public class Sets<T> {
         resultPowerSet.add(new HashSet<>(0));
 
         for (T itemFromOriginalSet : originalSet) {
-            long startingResultSize = resultPowerSet.size();
             Set<Set<T>> addAll = new HashSet<>();
             for (Set<T> oldSubset : resultPowerSet) {
                 if (oldSubset.size() == max)                      // more than four combinations can't be a winning hand
@@ -40,15 +42,13 @@ public class Sets<T> {
      * @param min  minimum size of subsets
      * @return all subsets of a given set, that have consecutive elements
      */
-    public Set<T[]> subsetsWithMinSize(List<T> list, int min) {
+    public Set<T[]> subsetsWithMinSize(Class<T> clazz, List<T> list, int min) {
         Set<T[]> res = new HashSet<>();
+        T[] template = (T[]) Array.newInstance(clazz, 0);
 
-        for (int i = 0; i <= list.size() - min; i++)                           // i is start of T[]
-            for (int j = 0; list.size() - j >= i + min; j++) {                 // j makes range of T[] smaller (min 3)
-                List<T> temp = new ArrayList<>();
-                for (int k = i; k < list.size() - j; k++) temp.add(list.get(k));
-                res.add((T[]) temp.toArray());
-            }
+        for (int i = 0, s = list.size(); i <= s - min; i++)                             // i is start of T[]
+            for (int j = 0; s - j >= i + min; j++)                                      // j makes range of T[] smaller
+                res.add(list.subList(i, list.size() - j).toArray(template));
         return res;
     }
 }

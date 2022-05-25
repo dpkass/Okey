@@ -1,3 +1,5 @@
+package Game;
+
 import Output.KonsoleOutput;
 import Output.Output;
 
@@ -6,16 +8,14 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-class Game {
+public class Game {
     final int maxWaitTime = 100;
-
+    private final Output out;
+    private final BufferedReader reader;
+    private final Map<Player, Integer> score = new HashMap<>();
     private Player[] players;
-    private Map<Player, Integer> score = new HashMap<>();
-    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private Output out;
     private Match currentMatch;
 
     public Game(Player[] players) {
@@ -24,10 +24,6 @@ class Game {
 
     public Game(Player[] players, Reader reader) {
         this(players, reader, new KonsoleOutput());
-    }
-
-    public Game(Player[] players, Output out) {
-        this(players, new InputStreamReader(System.in), out);
     }
 
     public Game(Player[] players, Reader reader, Output out) {
@@ -62,17 +58,18 @@ class Game {
      */
     private void removeLosers() {
         Set<Player> stillInGame =
-                score.keySet().stream().filter(k -> score.get(k) != 0).collect(Collectors.toCollection(HashSet::new));
-        score = score.keySet().stream().filter(k -> score.containsKey(k)).collect(Collectors.toMap(Function.identity(),
-                k -> score.get(k)));
-        players = stillInGame.toArray(Player[]::new);
+                score.keySet()
+                     .stream()
+                     .filter(k -> score.get(k) != 0)
+                     .collect(Collectors.toCollection(HashSet::new));
+        players = stillInGame.toArray((int value) -> new Player[value]);
     }
 
     /**
      * Initialized player scores. If there are not 2 to 4 players, or they have the same name, it will ask for the
      * players to type in their names first.
      *
-     * @return
+     * @return -1 if a naming condition is broken, else 0.
      */
     private int init() {
         if (players == null) return -1;
@@ -108,7 +105,7 @@ class Game {
             try {
                 while ((s = reader.readLine()) == null && (i += waitTime) < 100 * 1000)
                     TimeUnit.MILLISECONDS.wait(waitTime);
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
         }
         return s;
     }
@@ -121,7 +118,7 @@ class Game {
 
         String s = waitForInput(100);
 
-        setPlayers(Arrays.stream(s.split(" ")).map(p -> new Player(p)).toArray(Player[]::new));
+        setPlayers(Arrays.stream(s.split(" ")).map(Player::new).toArray((int value) -> new Player[value]));
         init();
     }
 
@@ -185,7 +182,7 @@ class Game {
     /**
      * Finds out if there are at least two players left
      *
-     * @return
+     * @return true if at least two players, else false.
      */
     public boolean playersLeft() {
         return players.length >= 2;
@@ -194,20 +191,20 @@ class Game {
     /**
      * Gives a string, with the scores of all players
      *
-     * @return
+     * @return the score of all players
      */
     public String getScore() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (Player p : players)
-            s += p.toString() + ": " + getScoreOf(p) + '\n';
-        return s;
+            s.append(p.toString()).append(": ").append(getScoreOf(p)).append('\n');
+        return s.toString();
     }
 
     /**
      * Gives the score of a given player
      *
-     * @param p Player to look up the score of
-     * @return
+     * @param p Game.Player to look up the score of
+     * @return the score of the player
      */
     public int getScoreOf(Player p) {
         return score.get(p);
@@ -217,28 +214,24 @@ class Game {
      * Gives the score of a given player
      *
      * @param s Name of player to look up the score of
-     * @return
+     * @return the score of the player
      */
     public int getScoreOf(String s) {
-        return score.get(getPlayer(s));
+        return score.get(getPlayerByName(s));
     }
 
     /**
      * Gives the player object with the given name
      *
      * @param s Name of player to get the object of
-     * @return
+     * @return the score of the player
      */
-    private Player getPlayer(String s) {
-        for (Player p : players) if (p.equals(s)) return p;
+    private Player getPlayerByName(String s) {
+        for (Player p : players) if (p.toString().equals(s)) return p;
         return null;
     }
 
     public void setPlayers(Player[] players) {
-        this.players = (Player[]) players;
-    }
-
-    public Match getCurrentMatch() {
-        return currentMatch;
+        this.players = players;
     }
 }
